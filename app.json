@@ -1,6 +1,23 @@
 {
   "pages": [
-    "pages/start/index",  
+    "pages/register/step/register",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "pages/start/index",
     "pages/register/step/step1",
     "pages/u/edit/edit-info",
     "pages/register/step/step2",
@@ -48,5 +65,6 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "",
     "navigationBarTextStyle": "black"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
