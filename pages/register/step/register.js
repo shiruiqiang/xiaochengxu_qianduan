@@ -1,20 +1,24 @@
 function t(t) {
   return t && t.__esModule ? t : {
       default: t
-  } 
+  }
 }
 var a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(t) {
       return typeof t
   } : function(t) {
       return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t
-  }, e = t(require("../../../helpers/WxValidate")),
+  },
+    // e = t(require("../../../helpers/WxValidate")),
   n = t(require("../../../json/cate.js")),
-  i = t(require("../../../etc/config")), 
+  i = t(require("../../../etc/config")),
   o = getApp(),
   r = require("../../../utils/auth.js"),
   c = require("../../../utils/WxNotificationCenter.js");
 const app = getApp()
-import http from '../../util/request.js';    
+import http from '../../util/request.js';
+
+import WxValidate from '../../../utils_zj/WxValidate'
+
 Page({
   data: {
       userinfo: {
@@ -48,7 +52,8 @@ Page({
       area: 0,
       //地址帅选 end
   },
-  onLoad: function(t) { 
+  onLoad: function(t) {
+      this.initValidate();
       var a = this;
       http.get('user',{uid:wx.getStorageSync("user").id}).then(data => {
         a.setData({user:data});
@@ -59,7 +64,7 @@ Page({
       });
       http.get('config').then(data => {
         a.setData({ citys: data.citys, xinyang: data.xinyang});
-      })  
+      })
       var def = n.default;
       a.setData({ cate: def});
       a.getCate();
@@ -67,8 +72,628 @@ Page({
       this.$wuxPickerCity = o.Wux().$wuxPickerCity, this.$wuxToast = o.Wux().$wuxToast;
   },
   onShow: function() {
-     
+
   },
+    getName: function(t) {
+    this.setData({
+        "form.name": t.detail.value
+    })
+  },
+    getNickname: function(t) {
+        this.setData({
+            "form.alias": t.detail.value
+        })
+    },
+    onGender: function(t) {
+        var e = t.currentTarget.dataset.id || 1;
+        this.setData({
+            "form.sex": e,
+            "form.sexStr": e == 0?"男":"女"
+        })
+
+        // var a = this,
+        //     e = t.currentTarget.dataset.id || 2;
+        // return o.WxService.showModal({
+        //     title: "提示",
+        //     content: "提交后性别不可更改哦~",
+        //     cancelText: "再想想",
+        //     confirmText: "确定"
+        // }).then(function(t) {
+        //     1 == t.confirm && a.setData({
+        //         "cate.genderActionIndex": e,
+        //         "form.genderString": a.data.cate.genderData[e].name,
+        //         "form.gender": a.data.cate.genderData[e].value
+        //     })
+        // })
+    },
+    onBirth: function(t) {
+        this.setData({
+            "form.birthDate": t.detail.value,
+            // "form.age": jjjj======
+        })
+    },
+    onHeight: function(t) {
+        this.setData({
+            "form.height": this.data.cate.heightData[t.detail.value].name
+        })
+        // this.setData({
+        //     "cate.heightActionIndex": t.detail.value,
+        //     "form.height": this.data.cate.heightData[t.detail.value].value,
+        //     "form.heightString": this.data.cate.heightData[t.detail.value].name
+        // })
+    },
+    getweight: function(t) {
+        this.setData({
+            "form.weight": t.detail.value
+        })
+    },
+    oneducation: function(t) {
+        this.setData({
+            "form.education": this.data.cate.dictionaries.educationData[t.detail.value].value,
+            "form.educationStr": this.data.cate.dictionaries.educationData[t.detail.value].name
+        })
+        // this.setData({
+        //     "cate.eduActionIndex": t.detail.value,
+        //     "form.educationString": this.data.cate.eduData[t.detail.value].name,
+        //     "form.education": this.data.cate.eduData[t.detail.value].value
+        // })
+    },
+    onincome: function(t) {
+        this.setData({
+            // "cate.salaryActionIndex": t.detail.value,
+            "form.income": this.data.cate.dictionaries.incomeData[t.detail.value].value,
+            "form.incomeStr": this.data.cate.dictionaries.incomeData[t.detail.value].name
+        })
+        // this.setData({
+        //     "cate.salaryActionIndex": t.detail.value,
+        //     "form.salaryString": this.data.cate.salaryData[t.detail.value].name,
+        //     "form.salary": this.data.cate.salaryData[t.detail.value].value
+        // })
+    },
+    hometownChange: function (t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            "form.hometown": t.detail.value,
+            "form.hometownStr": t.detail.value[0] + t.detail.value[1] + t.detail.value[2]
+        })
+        // var a = this;
+        // if (t.detail.value[0] == 0) {
+        //     a.setData({
+        //         address1: '请选择'
+        //     });
+        // } else {
+        //     a.setData({
+        //         "form.workCityString": a.data.city[0][t.detail.value[0]].name + ',' + a.data.city[1][t.detail.value[1]].name
+        //     });
+        // }
+    },
+    workplaceChange: function (t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            "form.workplace": t.detail.value,
+            "form.workplaceStr": t.detail.value[0] + t.detail.value[1] + t.detail.value[2]
+        })
+        // var a = this;
+        // if (t.detail.value[0] == 0) {
+        //     a.setData({
+        //         address1: '请选择'
+        //     });
+        // } else {
+        //     a.setData({
+        //         "form.workCityString": a.data.city[0][t.detail.value[0]].name + ',' + a.data.city[1][t.detail.value[1]].name
+        //     });
+        // }
+    },
+    marriageChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.marriageStr": this.data.cate.dictionaries.marriageData[t.detail.value].name,
+            "form.marriage": this.data.cate.dictionaries.marriageData[t.detail.value].value
+        })
+    },
+    isKidChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.isKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
+            "cate.show.isKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name,
+        })
+    },
+    occupationChange: function(t) {
+        this.setData({
+            "form.occupation": t.detail.value
+        })
+    },
+    isDemandKidChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.isDemandKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
+            "cate.show.isDemandKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+        })
+    },
+    carChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.carStr": this.data.cate.dictionaries.carData[t.detail.value].name,
+            "form.car": this.data.cate.dictionaries.carData[t.detail.value].value
+        })
+    },
+    houseChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.houseStr": this.data.cate.dictionaries.houseData[t.detail.value].name,
+            "form.house": this.data.cate.dictionaries.houseData[t.detail.value].value
+        })
+    },
+    weChatChange: function(t) {
+        this.setData({
+            "form.weChat": t.detail.value
+        })
+    },
+    religionChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.religionStr": this.data.cate.dictionaries.religionData[t.detail.value].name,
+            "form.religion": this.data.cate.dictionaries.religionData[t.detail.value].value
+        })
+    },
+    phoneChange: function(t) {
+        this.setData({
+            "form.phone": t.detail.value
+        })
+    },
+    phone2Change: function(t) {
+        this.setData({
+            "form.phone2": t.detail.value
+        })
+    },
+    isSmokingChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.isSmoking": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
+            "cate.show.isSmoking": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+        })
+    },
+    isDrinkChange: function(t) {
+        console.log('picker发送选择改变，携带值为', t.detail.value)
+        this.setData({
+            // "cate.marriageActionIndex": t.detail.value,
+            "form.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
+            "cate.show.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+        })
+    },
+    getCate: function() {
+        for (var t = this.data.cate, a = [{
+            value: "",
+            name: "请选择"
+        }], e = [{
+            value: 0,
+            name: "请选择"
+        }], i = 150; i <= 210; i++) a.push({
+            value: i,
+            name: i + "cm"
+        });
+
+
+
+        // for (i = 30; i <= 150; i++) 30 == i && e.push({
+        //     value: i,
+        //     name: i + "以下kg"
+        // }), e.push({
+        //     value: i,
+        //     name: i + "kg"
+        // }), 150 == i && e.push({
+        //     value: i,
+        //     name: i + "以上kg"
+        // });
+        t = {
+            dictionaries: n.default,
+            heightData: a
+        //     genderData: n.
+        //         default.genderData,
+        //     genderArr: n.
+        //     default.genderData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     genderActionIndex: 0,
+        //     constellationData: n.
+        //         default.constellationData,
+        //     constellationArr: n.
+        //     default.constellationData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     constellationActionIndex: 0,
+        //     heightData: a,
+        //     heightArr: a.map(function(t) {
+        //         return t.name
+        //     }),
+        //     heightActionIndex: 0,
+        //     weightData: e,
+        //     weightArr: e.map(function(t) {
+        //         return t.name
+        //     }),
+        //     weightActionIndex: 0,
+        //     salaryData: n.
+        //         default.salaryData,
+        //     salaryArr: n.
+        //     default.salaryData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     salaryActionIndex: 0,
+        //     eduData: n.
+        //         default.eduData,
+        //     eduArr: n.
+        //     default.eduData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     eduActionIndex: 0,
+        //     marriageData: n.
+        //         default.marriageData,
+        //     marriageArr: n.
+        //     default.marriageData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     marriageActionIndex: 0,
+        //     childrenData: n.
+        //         default.childrenData,
+        //     childrenArr: n.
+        //     default.childrenData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     childrenActionIndex: 0,
+        //     bodyData: n.
+        //         default.bodyData,
+        //     bodyArr: n.
+        //     default.bodyData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     bodyActionIndex: 0,
+        //     wantchildrenData: n.
+        //         default.wantchildrenData,
+        //     wantchildrenArr: n.
+        //     default.wantchildrenData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     wantchildrenActionIndex: 0,
+        //     occupationData: n.
+        //         default.occupationData,
+        //     occupationArr: n.
+        //     default.occupationData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     occupationActionIndex: 0,
+        //     vehicleData: n.
+        //         default.vehicleData,
+        //     vehicleArr: n.
+        //     default.vehicleData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     vehicleActionIndex: 0,
+        //     houseData: n.
+        //         default.houseData,
+        //     houseArr: n.
+        //     default.houseData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     houseActionIndex: 0,
+        //     drinkingData: n.
+        //         default.drinkingData,
+        //     drinkingArr: n.
+        //     default.drinkingData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     drinkingActionIndex: 0,
+        //     smokingData: n.
+        //         default.smokingData,
+        //     smokingArr: n.
+        //     default.smokingData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     smokingActionIndex: 0,
+        //     stockData: n.
+        //         default.stockData,
+        //     stockArr: n.
+        //     default.stockData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     stockActionIndex: 0,
+        //     marryData: n.
+        //         default.marryData,
+        //     marryArr: n.
+        //     default.marryData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     marryActionIndex: 0,
+        //     showinfoData: n.
+        //         default.showinfoData,
+        //     showinfoArr: n.
+        //     default.showinfoData.map(function(t) {
+        //         return t.name
+        //     }),
+        //     showinfoActionIndex: 0
+        }, this.setData({
+            cate: t
+        })
+        console.info("11111111111111 = " + t);
+    },
+    initValidate() {
+        // 验证字段的规则
+        const rules = {
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 10
+            },
+            alias: {
+                required: true,
+                minlength: 2,
+                maxlength: 10
+            },
+            sexStr: {
+                required: true,
+            },
+            birthDate: {
+                required: true,
+            },
+            height: {
+                required: true,
+            },
+            weight: {
+                required: true,
+                min: 40,
+                max: 150
+            },
+            educationStr: {
+                required: true,
+            },
+            incomeStr: {
+                required: true,
+            },
+            hometownStr: {
+                required: true,
+            },
+            workplaceStr: {
+                required: true,
+            },
+            marriageStr: {
+                required: true,
+            },
+            isKid: {
+                required: true,
+            },
+            occupation: {
+                required: true,
+                minlength: 2,
+                maxlength: 15
+            },
+            isDemandKid: {
+                required: true,
+            },
+            carStr: {
+                required: true,
+            },
+            houseStr: {
+                required: true,
+            },
+            weChat: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            religionStr: {
+                required: true,
+            },
+            phone: {
+                required: true,
+                tel: true,
+            },
+            phone2: {
+                required: true,
+                tel: true,
+                the_same: true
+            },
+            isSmoking: {
+                required: true,
+            },
+            isDrink: {
+                required: true,
+            }
+            // ,
+            // assistance: {
+            //     required: true,
+            //     assistance: true,
+            // },
+            // email: {
+            //     required: true,
+            //     email: true,
+            // },
+            // tel: {
+            //     required: true,
+            //     tel: true,
+            // },
+            // idcard: {
+            //     required: true,
+            //     idcard: true,
+            // },
+            // password: {
+            //     required: true,
+            //     minlength: 6,
+            //     maxlength: 15,
+            // },
+            // confirmPassword: {
+            //     required: true,
+            //     minlength: 6,
+            //     maxlength: 15,
+            //     equalTo: 'password',
+            // },
+            // countryIndex: {
+            //     required: true,
+            // },
+            // slider: {
+            //     required: true,
+            //     min: 40,
+            //     max: 80,
+            // },
+            // agree: {
+            //     required: true,
+            // },
+            // textarea: {
+            //     required: true,
+            //     contains: '自愿',
+            // },
+        }
+
+        // 验证字段的提示信息，若不传则调用默认的信息
+        const messages = {
+            name: {
+                required: '请填写姓名',
+                minlength: '姓名长度不少于2位',
+                maxlength: '姓名长度不多于10位'
+            },
+            alias: {
+                required: true,
+                minlength: '昵称长度不少于2位',
+                maxlength: '昵称长度不多于10位'
+            },
+            sexStr: {
+                required: "性别不能为空",
+            },
+            birthDate: {
+                required: "出生日期不能为空",
+            },
+            height: {
+                required: "身高不能为空",
+            },
+            weight: {
+                required: "体重不能为空",
+                min: "体重不小于40kg",
+                max: "体重不能大于150kg"
+            },
+            educationStr: {
+                required: "学历不能为空",
+            },
+            incomeStr: {
+                required: "月收入不能为空",
+            },
+            hometownStr: {
+                required: "故乡不能为空",
+            },
+            workplaceStr: {
+                required: "工作地不能为空",
+            },
+            marriageStr: {
+                required: "婚姻状况不能为空",
+            },
+            isKid: {
+                required: "有没有小孩不能为空",
+            },
+            occupation: {
+                required: "职业不能为空",
+                minlength: '职业长度不少于2位',
+                maxlength: '职业长度不多于15位'
+            },
+            isDemandKid: {
+                required: "是否想要小孩不能为空",
+            },
+            carStr: {
+                required: "买车情况不能为空",
+            },
+            houseStr: {
+                required: "买房情况不能为空",
+            },
+            weChat: {
+                required: "微信号不能为空",
+                minlength: '微信号长度不少于2位',
+                maxlength: '微信号长度不多于50位'
+            },
+            religionStr: {
+                required: "宗教信仰不能为空",
+            },
+            phone: {
+                required: "手机号不能为空",
+                tel: "手机号码格式错误",
+            },
+            phone2: {
+                required: "确认手机号不能为空",
+                tel: "确认手机号码格式错误",
+                the_same: "手机号与确认手机号不一样"
+            },
+            isSmoking: {
+                required: "是否抽烟不能为空",
+            },
+            isDrink: {
+                required: "是否喝酒不能为空",
+            }
+            // ,
+            // assistance: {
+            //     required: '请勾选1-2个敲码助手',
+            // },
+            // email: {
+            //     required: '请输入邮箱',
+            //     email: '请输入正确的邮箱',
+            // },
+            // tel: {
+            //     required: '请输入手机号',
+            //     tel: '请输入正确的手机号',
+            // },
+            // idcard: {
+            //     required: '请输入身份证号码',
+            //     idcard: '请输入正确的身份证号码',
+            // },
+            // password: {
+            //     required: '请输入新密码',
+            //     minlength: '密码长度不少于6位',
+            //     maxlength: '密码长度不多于15位',
+            // },
+            // confirmPassword: {
+            //     required: '请输入确认密码',
+            //     minlength: '密码长度不少于6位',
+            //     maxlength: '密码长度不多于15位',
+            //     equalTo: '确认密码和新密码保持一致',
+            // },
+            // countryIndex: {
+            //     required: '请选择国家/地区',
+            // },
+            // slider: {
+            //     required: '请选择年龄',
+            //     min: '年龄不小于18',
+            //     max: '年龄不大于60',
+            // },
+            // agree: {
+            //     required: '请同意我们的声明',
+            // },
+            // textarea: {
+            //     required: '请输入文本',
+            //     contains: '请输入文本（必须含有自愿两字）',
+            // },
+        }
+        // 创建实例对象
+        this.WxValidate = new WxValidate(rules, messages)
+
+        // 自定义验证规则
+        // this.WxValidate.addMethod('assistance', (value, param) => {
+        //     return this.WxValidate.optional(value) || (value.length >= 1 && value.length <= 2)
+        // }, '请勾选1-2个敲码助手')
+        this.WxValidate.addMethod('the_same', (value, param) => {
+            return value == this.data.form.phone
+        }, '手机号与确认手机号不一样')
+
+        },
+
+
+
+
+
+
+
+
+
   renderForm: function() {
       var t = this;
       this.info.getAsync({
@@ -181,11 +806,6 @@ Page({
           }
       })
   },
-  getNickname: function(t) {
-      this.setData({
-          "userInfo.nickName": t.detail.value
-      })
-  },
   getWechat: function(t) {
       this.setData({
           "userInfo.wechat": t.detail.value
@@ -258,163 +878,11 @@ Page({
     });
   },
   //地址帅选 end
-  getCate: function() {
-      for (var t = this.data.cate, a = [{
-          value: 0,
-          name: "请选择"
-      }], e = [{
-          value: 0,
-          name: "请选择"
-      }], i = 150; i <= 210; i++) a.push({
-          value: i,
-          name: i + "cm"
-      });
-      for (i = 30; i <= 150; i++) 30 == i && e.push({
-          value: i,
-          name: i + "以下kg"
-      }), e.push({
-          value: i,
-          name: i + "kg"
-      }), 150 == i && e.push({
-          value: i,
-          name: i + "以上kg"
-      });
-      t = {
-          genderData: n.
-          default.genderData,
-          genderArr: n.
-          default.genderData.map(function(t) {
-              return t.name
-          }),
-          genderActionIndex: 0,
-          constellationData: n.
-          default.constellationData,
-          constellationArr: n.
-          default.constellationData.map(function(t) {
-              return t.name
-          }),
-          constellationActionIndex: 0,
-          heightData: a,
-          heightArr: a.map(function(t) {
-              return t.name
-          }),
-          heightActionIndex: 0,
-          weightData: e,
-          weightArr: e.map(function(t) {
-              return t.name
-          }),
-          weightActionIndex: 0,
-          salaryData: n.
-          default.salaryData,
-          salaryArr: n.
-          default.salaryData.map(function(t) {
-              return t.name
-          }),
-          salaryActionIndex: 0,
-          eduData: n.
-          default.eduData,
-          eduArr: n.
-          default.eduData.map(function(t) {
-              return t.name
-          }),
-          eduActionIndex: 0,
-          marriageData: n.
-          default.marriageData,
-          marriageArr: n.
-          default.marriageData.map(function(t) {
-              return t.name
-          }),
-          marriageActionIndex: 0,
-          childrenData: n.
-          default.childrenData,
-          childrenArr: n.
-          default.childrenData.map(function(t) {
-              return t.name
-          }),
-          childrenActionIndex: 0,
-          bodyData: n.
-          default.bodyData,
-          bodyArr: n.
-          default.bodyData.map(function(t) {
-              return t.name
-          }),
-          bodyActionIndex: 0,
-          wantchildrenData: n.
-          default.wantchildrenData,
-          wantchildrenArr: n.
-          default.wantchildrenData.map(function(t) {
-              return t.name
-          }),
-          wantchildrenActionIndex: 0,
-          occupationData: n.
-          default.occupationData,
-          occupationArr: n.
-          default.occupationData.map(function(t) {
-              return t.name
-          }),
-          occupationActionIndex: 0,
-          vehicleData: n.
-          default.vehicleData,
-          vehicleArr: n.
-          default.vehicleData.map(function(t) {
-              return t.name
-          }),
-          vehicleActionIndex: 0,
-          houseData: n.
-          default.houseData,
-          houseArr: n.
-          default.houseData.map(function(t) {
-              return t.name
-          }),
-          houseActionIndex: 0,
-          drinkingData: n.
-          default.drinkingData,
-          drinkingArr: n.
-          default.drinkingData.map(function(t) {
-              return t.name
-          }),
-          drinkingActionIndex: 0,
-          smokingData: n.
-          default.smokingData,
-          smokingArr: n.
-          default.smokingData.map(function(t) {
-              return t.name
-          }),
-          smokingActionIndex: 0,
-          stockData: n.
-          default.stockData,
-          stockArr: n.
-          default.stockData.map(function(t) {
-              return t.name
-          }),
-          stockActionIndex: 0,
-          marryData: n.
-          default.marryData,
-          marryArr: n.
-          default.marryData.map(function(t) {
-              return t.name
-          }),
-          marryActionIndex: 0,
-          showinfoData: n.
-          default.showinfoData,
-          showinfoArr: n.
-          default.showinfoData.map(function(t) {
-              return t.name
-          }),
-          showinfoActionIndex: 0
-      }, this.setData({
-          cate: t
-      })
-  },
+
   onWorkCity: function(t) {
     this.setData({
       "form.workCityString": this.data.citys[t.detail.value],
     })
-  },
-  onBirth: function(t) {
-      this.setData({
-          "form.birth": t.detail.value
-      })
   },
   onMarry: function(t) {
       this.setData({
@@ -471,56 +939,14 @@ Page({
           }
       })
   },
-  onGender: function(t) {
-      var a = this,
-          e = t.currentTarget.dataset.id || 2;
-      return o.WxService.showModal({
-          title: "提示",
-          content: "提交后性别不可更改哦~",
-          cancelText: "再想想",
-          confirmText: "确定"
-      }).then(function(t) {
-          1 == t.confirm && a.setData({
-              "cate.genderActionIndex": e,
-              "form.genderString": a.data.cate.genderData[e].name,
-              "form.gender": a.data.cate.genderData[e].value
-          })
-      })
-  },
   onWeight: function(t) {
       this.setData({
           "cate.weightActionIndex": t.detail.value,
           "form.weight": this.data.cate.weightData[t.detail.value].value
       })
   },
-  onHeight: function(t) {
-      this.setData({
-          "cate.heightActionIndex": t.detail.value,
-          "form.height": this.data.cate.heightData[t.detail.value].value,
-          "form.heightString": this.data.cate.heightData[t.detail.value].name
-      })
-  },
-  onSalary: function(t) {
-      this.setData({
-          "cate.salaryActionIndex": t.detail.value,
-          "form.salaryString": this.data.cate.salaryData[t.detail.value].name,
-          "form.salary": this.data.cate.salaryData[t.detail.value].value
-      })
-  },
-  onEdu: function(t) {
-      this.setData({
-          "cate.eduActionIndex": t.detail.value,
-          "form.educationString": this.data.cate.eduData[t.detail.value].name,
-          "form.education": this.data.cate.eduData[t.detail.value].value
-      })
-  },
-  onMarriage: function(t) {
-      this.setData({
-          "cate.marriageActionIndex": t.detail.value,
-          "form.marriageString": this.data.cate.marriageData[t.detail.value].name,
-          "form.marriage": this.data.cate.marriageData[t.detail.value].value
-      })
-  },
+
+
   onChildren: function(t) {
       this.setData({
           "cate.childrenActionIndex": t.detail.value,
@@ -573,70 +999,91 @@ Page({
       var e = Object.assign(this.data.form, t.detail.value);
       console.log(e);
       e.formId = t.detail.formId;
-      if("" == e.nickname){
-        a.showToastErr("昵称不能为空");
-        return false;
+
+      // 传入表单数据，调用验证方法
+      if (!this.WxValidate.checkForm(e)) {
+          const error = this.WxValidate.errorList[0]
+            a.showToastErr(error.msg);
+          // this.showModal(error)
+          return false
       }
-      if ("" == e.gender) {
-        a.showToastErr("请选择性别");
-        return false;
-      }
-      if ("" == e.birth) {
-        a.showToastErr("请选择出生年月");
-        return false;
-      }
-      if ("" == e.heightString) {
-        a.showToastErr("请选择身高"); 
-        return false;
-      }
-      if (e.salaryString == ""){
-        a.showToastErr("请选择月收入");
-        return false;
-      }
-      if (e.educationString == "") {
-        a.showToastErr("请选择学历");
-        return false;
-      }
-      if (e.workCityString == "") {
-        a.showToastErr("请选择工作地区");
-        return false;
-      }
-      if (e.marriageString == "") {
-        a.showToastErr("请选择婚姻状况");
-        return false;
-      }
-      if (e.childrenString == "") {
-        a.showToastErr("请选择有没有小孩");
-        return false;
-      }
-      if (e.occupationString == "") {
-        a.showToastErr("请选择职业");
-        return false;
-      }
-      if (e.wantChildrenString == "") {
-        a.showToastErr("请选择是否想要小孩");
-        return false;
-      } 
-      if (e.vehicleString == "") {
-        a.showToastErr("请选择买车情况");
-        return false;
-      }
-      if (e.houseString == "") {
-        a.showToastErr("请选择买房情况");
-        return false;
-      }
-      if (e.wechat == "" &&  (e.qq == "")) {
-        a.showToastErr("联系方式必须填写一项");
-        return false;
-      }
-      http.post('saveuser1',e).then(data => {
-        a.showToastSuc("保存成功");
-        setTimeout(function () {
-          wx.navigateTo({
-            url: './step2',
-          })
-        }, 2500);
-      });
+      // if("" == e.nickname){
+      //   a.showToastErr("昵称不能为空");
+      //   return false;
+      // }
+      // if ("" == e.gender) {
+      //   a.showToastErr("请选择性别");
+      //   return false;
+      // }
+      // if ("" == e.birth) {
+      //   a.showToastErr("请选择出生年月");
+      //   return false;
+      // }
+      // if ("" == e.heightString) {
+      //   a.showToastErr("请选择身高");
+      //   return false;
+      // }
+      // if (e.salaryString == ""){
+      //   a.showToastErr("请选择月收入");
+      //   return false;
+      // }
+      // if (e.educationString == "") {
+      //   a.showToastErr("请选择学历");
+      //   return false;
+      // }
+      // if (e.workCityString == "") {
+      //   a.showToastErr("请选择工作地区");
+      //   return false;
+      // }
+      // if (e.marriageString == "") {
+      //   a.showToastErr("请选择婚姻状况");
+      //   return false;
+      // }
+      // if (e.childrenString == "") {
+      //   a.showToastErr("请选择有没有小孩");
+      //   return false;
+      // }
+      // if (e.occupationString == "") {
+      //   a.showToastErr("请选择职业");
+      //   return false;
+      // }
+      // if (e.wantChildrenString == "") {
+      //   a.showToastErr("请选择是否想要小孩");
+      //   return false;
+      // }
+      // if (e.vehicleString == "") {
+      //   a.showToastErr("请选择买车情况");
+      //   return false;
+      // }
+      // if (e.houseString == "") {
+      //   a.showToastErr("请选择买房情况");
+      //   return false;
+      // }
+      // if (e.wechat == "" &&  (e.qq == "")) {
+      //   a.showToastErr("联系方式必须填写一项");
+      //   return false;
+      // }
+
+      wx.request({
+          url: 'http://localhost/mini_program/member_save', //仅为示例，并非真实的接口地址
+          method: 'POST',
+          data: e,
+          header: {
+              'content-type': 'application/json' // 默认值
+          },
+          success (res) {
+              console.log("******************************   " + res.data)
+          }
+      })
+
+      // http.post('saveuser1',e).then(data => {
+      //   a.showToastSuc("保存成功");
+      //   setTimeout(function () {
+      //     wx.navigateTo({
+      //       url: './step2',
+      //     })
+      //   }, 2500);
+      // });
   },
   showToastSuc: function(t) {
       wx.showToast({
@@ -669,7 +1116,7 @@ Page({
     a.setData({ auth1: 1, auth2: 0 });
   },
   getPhoneNumber: function(e) {
-     
+
       var t = this;
       wx.login({
         success: function (o) {
@@ -690,7 +1137,7 @@ Page({
             t.setData({
               msglogin: 0
             })
-          });  
+          });
         }
       })
   },

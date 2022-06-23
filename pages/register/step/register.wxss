@@ -490,7 +490,7 @@ page { background-color: #fef5f7; font-size:14px; }
 wx-button:after{ display: none; }
 wx-button,wx-button[type="primary"] { color:#FFFFFF; background-color:#ff677d; }
 .button-hover,.button-hover[type="primary"] { color: #FFFFFF; background-color: #e96175; }
-.placeholder{color:#bbb;font-size:36rpx;}
+.placeholder{color:#bbb;font-size:32rpx;}
 page {background-color: #fff;}
 .container{padding-bottom:168rpx;color:#666;}
 .mod-hd{display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;-webkit-flex-direction: column;flex-direction: column;padding:30rpx;position: relative;}
@@ -523,6 +523,15 @@ page {background-color: #fff;}
 .profile-box .form-line .item .tit{width:100%;text-align: center;}
 .profile-box .form-line .item .select{width:100%;text-align: center;font-size:32rpx;color:#bbb;padding:24rpx 0 40rpx;line-height:1.2}
 .profile-box .form-line .item .input .input-txt{font-size:28rpx;padding:0;}
+.textarea-wrp {
+	padding: 0rpx 50rpx;
+	background-color: #fff;
+}
+textarea {
+	//width: 600rpx;
+	padding: 25rpx 0;
+	font-size:32rpx;color:#bbb;line-height:1.2
+}
 .profile-box .form-line .item.active .select{color:#000}
 .weui-btn-area{ z-index:2; position: fixed; left:0; bottom:0; width:100%; padding:20rpx 80rpx 40rpx; margin:0; box-sizing: border-box; background-color: rgba(255, 255, 255, .6) }
 wx-button:after{ display: block; }
