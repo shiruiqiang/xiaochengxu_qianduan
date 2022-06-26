@@ -50,6 +50,7 @@ Page({
       city: [],
       multiIndex: [0, 0],
       area: 0,
+      files: []
       //地址帅选 end
   },
   onLoad: function(t) {
@@ -266,6 +267,31 @@ Page({
             // "cate.marriageActionIndex": t.detail.value,
             "form.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
             "cate.show.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+        })
+    },
+    selfDescriptionBlur: function(e) {
+        console.log(e.detail.value)
+        this.setData({
+            "form.selfDescription": e.detail.value
+        })
+
+    },
+    interestBlur: function(e) {
+        console.log(e.detail.value)
+        this.setData({
+            "form.interest": e.detail.value
+        })
+    },
+    mateCriterionDescriptionBlur: function(e) {
+        console.log(e.detail.value)
+        this.setData({
+            "form.mateCriterionDescription": e.detail.value
+        })
+    },
+    familyBackgroundBlur: function(e) {
+        console.log(e.detail.value)
+        this.setData({
+            "form.familyBackground": e.detail.value
         })
     },
     getCate: function() {
@@ -503,6 +529,22 @@ Page({
             },
             isDrink: {
                 required: true,
+            },
+            selfDescription: {
+                minlength: 1,
+                maxlength: 50
+            },
+            interest: {
+                minlength: 1,
+                maxlength: 50
+            },
+            mateCriterionDescription: {
+                minlength: 1,
+                maxlength: 50
+            },
+            familyBackground: {
+                minlength: 1,
+                maxlength: 50
             }
             // ,
             // assistance: {
@@ -629,6 +671,22 @@ Page({
             },
             isDrink: {
                 required: "是否喝酒不能为空",
+            },
+            selfDescription: {
+                minlength: '自我描述长度不少于1位',
+                maxlength: '自我描述长度不多于50位'
+            },
+            interest: {
+                minlength: '兴趣爱好长度不少于1位',
+                maxlength: '兴趣爱好长度不多于50位'
+            },
+            mateCriterionDescription: {
+                minlength: '择偶标准描述长度不少于2位',
+                maxlength: '择偶标准描述长度不多于50位'
+            },
+            familyBackground: {
+                minlength: '家庭背景长度不少于2位',
+                maxlength: '家庭背景长度不多于50位'
             }
             // ,
             // assistance: {
@@ -685,6 +743,198 @@ Page({
         }, '手机号与确认手机号不一样')
 
         },
+
+    chooseImage2: function() {
+        var t = this;
+        wx.showToast({
+            title: '正在上传...',
+            icon: 'loading',
+            mask: true,
+            duration: 10000
+        });
+        wx.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+            sourceType: ['album', 'camera'],
+            success: function (res) {
+                var tempFilePaths = res.tempFilePaths;
+                // let siteroot = app.siteInfo.siteroot;
+                // siteroot = siteroot.replace('app/index.php', 'web/index.php');
+                // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
+                wx.uploadFile({
+                    url: "http://localhost/common/upload",
+                    filePath: tempFilePaths[0],
+                    name: 'file',
+                    formData: {},
+                    header: {},
+                    success: function (res) {
+                        var fileArray = t.data.files;
+                        fileArray.push(JSON.parse(res.data).url)
+                        t.setData({ "files": fileArray });
+                        wx.hideToast();
+                    },
+                })
+            },
+        })
+    },
+    deleteImage: function(t) {
+        var e = t.currentTarget.id,
+            a = this;
+        o.WxService.showModal({
+            title: "提示",
+            content: "确定要删除该图片？"
+        }).then(function(t) {
+            1 == t.confirm && (a.data.files = a.data.files.filter(function(t,i) {
+                return !(t == e)
+            }), console.log(a.data.files), a.setData({
+                files: a.data.files
+            }),
+                // http.get('setimgs', { imgs: a.data.files.join(','), uid: wx.getStorageSync("user").id }).then(data => { })
+                    wx.request({
+                        url: 'http://localhost/common/delete/file', //仅为示例，并非真实的接口地址
+                        method: 'GET',
+                        data: {"resource": e.substring(e.indexOf("/upload"))},
+                        header: {
+                            'content-type': 'application/json' // 默认值
+                        },
+                        success (res) {
+                            console.log("******************************   " + res.data)
+                        }
+                    })
+
+            )
+        });
+
+    },
+    submitForm: function(t) {
+        var a = this;
+        var e = Object.assign(this.data.form, t.detail.value);
+        console.log(e);
+        e.formId = t.detail.formId;
+
+        // 传入表单数据，调用验证方法
+        if (!this.WxValidate.checkForm(e)) {
+            const error = this.WxValidate.errorList[0]
+            a.showToastErr(error.msg);
+            // this.showModal(error)
+            return false
+        }
+        if(this.files.length == 0){
+            a.showToastErr("相册不能为空");
+            return false
+        }else if(this.files.length > 2){
+            a.showToastErr("相册不能大于两张");
+            return false
+        }else{
+            this.setData({
+                "form.pictureJson": JSON.stringify(this.files)
+            })
+        }
+        // if("" == e.nickname){
+        //   a.showToastErr("昵称不能为空");
+        //   return false;
+        // }
+        // if ("" == e.gender) {
+        //   a.showToastErr("请选择性别");
+        //   return false;
+        // }
+        // if ("" == e.birth) {
+        //   a.showToastErr("请选择出生年月");
+        //   return false;
+        // }
+        // if ("" == e.heightString) {
+        //   a.showToastErr("请选择身高");
+        //   return false;
+        // }
+        // if (e.salaryString == ""){
+        //   a.showToastErr("请选择月收入");
+        //   return false;
+        // }
+        // if (e.educationString == "") {
+        //   a.showToastErr("请选择学历");
+        //   return false;
+        // }
+        // if (e.workCityString == "") {
+        //   a.showToastErr("请选择工作地区");
+        //   return false;
+        // }
+        // if (e.marriageString == "") {
+        //   a.showToastErr("请选择婚姻状况");
+        //   return false;
+        // }
+        // if (e.childrenString == "") {
+        //   a.showToastErr("请选择有没有小孩");
+        //   return false;
+        // }
+        // if (e.occupationString == "") {
+        //   a.showToastErr("请选择职业");
+        //   return false;
+        // }
+        // if (e.wantChildrenString == "") {
+        //   a.showToastErr("请选择是否想要小孩");
+        //   return false;
+        // }
+        // if (e.vehicleString == "") {
+        //   a.showToastErr("请选择买车情况");
+        //   return false;
+        // }
+        // if (e.houseString == "") {
+        //   a.showToastErr("请选择买房情况");
+        //   return false;
+        // }
+        // if (e.wechat == "" &&  (e.qq == "")) {
+        //   a.showToastErr("联系方式必须填写一项");
+        //   return false;
+        // }
+
+        wx.request({
+            url: 'http://localhost/mini_program/member_save', //仅为示例，并非真实的接口地址
+            method: 'POST',
+            data: e,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success (res) {
+                console.log("******************************   " + res.data)
+            }
+        })
+
+        // http.post('saveuser1',e).then(data => {
+        //   a.showToastSuc("保存成功");
+        //   setTimeout(function () {
+        //     wx.navigateTo({
+        //       url: './step2',
+        //     })
+        //   }, 2500);
+        // });
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -775,11 +1025,11 @@ Page({
         sourceType: ['album', 'camera'],
         success: function (res) {
           var tempFilePaths = res.tempFilePaths;
-          let siteroot = app.siteInfo.siteroot;
-          siteroot = siteroot.replace('app/index.php', 'web/index.php');
-          let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
+          // let siteroot = app.siteInfo.siteroot;
+          // siteroot = siteroot.replace('app/index.php', 'web/index.php');
+          // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
           wx.uploadFile({
-            url: upurl,
+            url: "http://localhost/common/upload",
             filePath: tempFilePaths[0],
             name: 'file',
             formData: {},
@@ -994,97 +1244,7 @@ Page({
           "form.body": this.data.cate.bodyData[t.detail.value].value
       })
   },
-  submitForm: function(t) {
-      var a = this;
-      var e = Object.assign(this.data.form, t.detail.value);
-      console.log(e);
-      e.formId = t.detail.formId;
 
-      // 传入表单数据，调用验证方法
-      if (!this.WxValidate.checkForm(e)) {
-          const error = this.WxValidate.errorList[0]
-            a.showToastErr(error.msg);
-          // this.showModal(error)
-          return false
-      }
-      // if("" == e.nickname){
-      //   a.showToastErr("昵称不能为空");
-      //   return false;
-      // }
-      // if ("" == e.gender) {
-      //   a.showToastErr("请选择性别");
-      //   return false;
-      // }
-      // if ("" == e.birth) {
-      //   a.showToastErr("请选择出生年月");
-      //   return false;
-      // }
-      // if ("" == e.heightString) {
-      //   a.showToastErr("请选择身高");
-      //   return false;
-      // }
-      // if (e.salaryString == ""){
-      //   a.showToastErr("请选择月收入");
-      //   return false;
-      // }
-      // if (e.educationString == "") {
-      //   a.showToastErr("请选择学历");
-      //   return false;
-      // }
-      // if (e.workCityString == "") {
-      //   a.showToastErr("请选择工作地区");
-      //   return false;
-      // }
-      // if (e.marriageString == "") {
-      //   a.showToastErr("请选择婚姻状况");
-      //   return false;
-      // }
-      // if (e.childrenString == "") {
-      //   a.showToastErr("请选择有没有小孩");
-      //   return false;
-      // }
-      // if (e.occupationString == "") {
-      //   a.showToastErr("请选择职业");
-      //   return false;
-      // }
-      // if (e.wantChildrenString == "") {
-      //   a.showToastErr("请选择是否想要小孩");
-      //   return false;
-      // }
-      // if (e.vehicleString == "") {
-      //   a.showToastErr("请选择买车情况");
-      //   return false;
-      // }
-      // if (e.houseString == "") {
-      //   a.showToastErr("请选择买房情况");
-      //   return false;
-      // }
-      // if (e.wechat == "" &&  (e.qq == "")) {
-      //   a.showToastErr("联系方式必须填写一项");
-      //   return false;
-      // }
-
-      wx.request({
-          url: 'http://localhost/mini_program/member_save', //仅为示例，并非真实的接口地址
-          method: 'POST',
-          data: e,
-          header: {
-              'content-type': 'application/json' // 默认值
-          },
-          success (res) {
-              console.log("******************************   " + res.data)
-          }
-      })
-
-      // http.post('saveuser1',e).then(data => {
-      //   a.showToastSuc("保存成功");
-      //   setTimeout(function () {
-      //     wx.navigateTo({
-      //       url: './step2',
-      //     })
-      //   }, 2500);
-      // });
-  },
   showToastSuc: function(t) {
       wx.showToast({
         title: t,

@@ -241,7 +241,54 @@
                                 <view class="item">
                                     <view class="tit">自我描述</view>
                                     <view class="textarea-wrp">
-                                        <textarea bindblur="bindTextAreaBlur" auto-height />
+                                        <textarea bindblur="selfDescriptionBlur" value="{{form.selfDescription}}" auto-height placeholder="请输入" placeholder-style="font-size:32rpx;color:#bbb;" />
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="form-line">
+                                <view class="item">
+                                    <view class="tit">兴趣爱好</view>
+                                    <view class="textarea-wrp">
+                                        <textarea bindblur="interestBlur" value="{{form.interest}}" auto-height placeholder="请输入" placeholder-style="font-size:32rpx;color:#bbb;" />
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="form-line">
+                                <view class="item">
+                                    <view class="tit">择偶标准描述</view>
+                                    <view class="textarea-wrp">
+                                        <textarea bindblur="mateCriterionDescriptionBlur" value="{{form.mateCriterionDescription}}" auto-height  placeholder="请输入"  placeholder-style="font-size:32rpx;color:#bbb;" />
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="form-line">
+                                <view class="item">
+                                    <view class="tit">家庭背景</view>
+                                    <view class="textarea-wrp">
+                                        <textarea bindblur="familyBackgroundBlur" value="{{form.familyBackground}}" auto-height placeholder="请输入" placeholder-style="font-size:32rpx;color:#bbb;" />
+                                    </view>
+                                </view>
+                            </view>
+
+
+                            <view class="form-line">
+                                <view class="item">
+                                    <view class="tit">上传照片</view>
+                                    <view class="">
+                                        <view class="weui-uploader__files" id="uploaderFiles">
+                                            <view class="weui-uploader__input-box">
+                                                <view bindtap="chooseImage2" class="weui-uploader__input"></view>
+<!--                                                <view class="weui-uploader__text">上传照片</view>-->
+                                            </view>
+                                            <block wx:for="{{files}}"  wx:for-item="item">
+                                                <block wx:if="{{item}}">
+                                                    <view bindtap="deleteImage" class="weui-uploader__file" id="{{item}}">
+                                                        <image class="weui-uploader__img" mode="aspectFill" src="{{item}}"></image>
+
+                                                    </view>
+                                                </block>
+                                            </block>
+                                        </view>
                                     </view>
                                 </view>
 
@@ -249,83 +296,40 @@
                             </view>
 
 
-
-
-
-                            <view class="mod-hd">
-                                <view class="tit">择偶标准</view>
-                                <view class="progress step2"></view>
-                            </view>
-                            <view class="mod-bd">
-<!--                                <form bindsubmit="submitForm" reportSubmit="true">-->
-                                    <view class="profile-box">
-
-
-                                        <view class="form-line">
-                                            <view class="item {{form.marriageString?'active':''}}">
-                                                <picker bindchange="onMarriage" range="{{cate.objectMarriageArr}}"
-                                                        value="{{cate.objectMarriageActionIndex||1}}">
-                                                    <view class="tit">婚姻状况</view>
-                                                    <view class="select">
-                                                        {{form.objectMarriageString ? form.objectMarriageString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                            <view class="item {{form.childrenString?'active':''}}">
-                                                <picker bindchange="onChildren" range="{{cate.objectChildrenArr}}" value="{{cate.childrenActionIndex||1}}">
-                                                    <view class="tit">有没有小孩</view>
-                                                    <view class="select">
-                                                        {{form.objectChildrenString ? form.objectChildrenString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                        </view>
-                                        <view class="form-line">
-                                            <view class="item {{form.occupationString?'active':''}}">
-                                                <picker bindchange="onOccupation" range="{{cate.occupationArr}}"
-                                                        value="{{cate.occupationActionIndex||0}}">
-                                                    <view class="tit">职业</view>
-                                                    <view class="select">
-                                                        {{form.occupationString ? form.occupationString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                            <view class="item {{form.wantChildrenString ?'active':''}}">
-                                                <picker bindchange="onWantchildren" range="{{cate.objectWantchildrenArr}}"
-                                                        value="{{cate.wantchildrenActionIndex||0}}">
-                                                    <view class="tit">是否想要小孩</view>
-                                                    <view class="select">
-                                                        {{form.objectWantChildrenString ? form.objectWantChildrenString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                        </view>
-                                        <view class="form-line">
-                                            <view class="item {{form.objectIsSmokingString?'active':''}}">
-                                                <picker bindchange="onSmoking" range="{{cate.smokingArr}}" value="{{cate.smokingActionIndex||0}}">
-                                                    <view class="tit">是否吸烟</view>
-                                                    <view class="select">
-
-                                                        {{form.objectIsSmokingString ? form.objectIsSmokingString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                            <view class="item {{form.objectIsDrinkingString?'active':''}}">
-                                                <picker bindchange="onDrinking" range="{{cate.drinkingArr}}"
-                                                        value="{{cate.drinkingActionIndex||0}}">
-                                                    <view class="tit">是否喝酒</view>
-                                                    <view class="select">
-                                                        {{form.objectIsDrinkingString ? form.objectIsDrinkingString : '请选择'}}
-                                                    </view>
-                                                </picker>
-                                            </view>
-                                        </view>
-                                    </view>
-<!--                                    <view class="weui-btn-area">-->
-<!--                                        <button class="weui-btn" formType="submit" type="primary">下一步(2/3)</button>-->
+<!--                            <view class="photo-wrap">-->
+<!--                                <block wx:if="{{user.vip == 1 && (user.vip1 == 0)}}">-->
+<!--                                    <view class="ui-panel">-->
+<!--                                        <view class="ui-cell vip-tip">-->
+<!--                                            <view class="ui-cell-row">-->
+<!--                                                <view class="ui-cell-bt">-->
+<!--                                                    最多可以上传{{maxImageNum}}张照片,开通会员即可无限制上传-->
+<!--                                                </view>-->
+<!--                                                <view class="ui-cell-ft">-->
+<!--                                                    <button bindtap="getPayment" class="ui-btn btn-tovip">开通会员</button>-->
+<!--                                                </view>-->
+<!--                                            </view>-->
+<!--                                        </view>-->
 <!--                                    </view>-->
-<!--                                </form>-->
-                            </view>
+<!--                                </block>-->
+<!--                                <view class="weui-uploader">-->
+<!--                                    <view class="weui-uploader__bd">-->
+<!--                                        <view class="weui-uploader__files" id="uploaderFiles">-->
+<!--                                            <view class="weui-uploader__input-box">-->
+<!--                                                <view bindtap="chooseImage" class="weui-uploader__input"></view>-->
+<!--                                                <view class="weui-uploader__text">上传照片</view>-->
+<!--                                            </view>-->
+<!--                                            <block wx:for="{{files}}" wx:key="{{ key }}" wx:for-item="item">-->
+<!--                                                <block wx:if="{{item}}">-->
+<!--                                                    <view bindtap="deleteImage" class="weui-uploader__file" id="{{key}}">-->
+<!--                                                        <image class="weui-uploader__img" mode="aspectFill" src="{{item}}"></image>-->
+
+<!--                                                    </view>-->
+<!--                                                </block>-->
+<!--                                            </block>-->
+<!--                                        </view>-->
+<!--                                    </view>-->
+<!--                                </view>-->
+<!--                            </view>-->
 
 
 
