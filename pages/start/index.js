@@ -14,59 +14,59 @@ Page({
         logged: !1
     },
     onLoad: function() {
-      wx.getSystemInfo({
-        success: function (res) {
-          if (res.system.split('iOS').length > 0) {
-            wx.setStorageSync('ios' , 0);
-          }else{
-            wx.setStorageSync('ios', 1);
-          }
-          wx.setStorageSync('ios', 0);
-        },
-      })
+      // wx.getSystemInfo({
+      //   success: function (res) {
+      //     if (res.system.split('iOS').length > 0) {
+      //       wx.setStorageSync('ios' , 0);
+      //     }else{
+      //       wx.setStorageSync('ios', 1);
+      //     }
+      //     wx.setStorageSync('ios', 0);
+      //   },
+      // })
 
-      http.get('config').then(data => {
-        if (data.pian == "1") {
-          wx.setNavigationBarTitle({
-            title: '联系我们',
-          })
-          wx.redirectTo({
-            url: '../user/company/index',
-          });
-          return false;
-        }
-        wx.setNavigationBarTitle({
-          title: data.sname,
-        });
-      });
-      if (!wx.getStorageSync('lat')) {
-        wx.getLocation({
-          type: "wgs84",
-          success: function (res) {
-            wx.setStorageSync('lat', res.latitude);
-            wx.setStorageSync('lng', res.longitude);
-          },
-        })
-      }
-      var uid = 0;
-      if (wx.getStorageSync("user") && (wx.getStorageSync("user").uid == 0)){
-        uid = 0;
-      } else if (!wx.getStorageSync("user")){
-        uid = 0;
-      }else{
-        uid = wx.getStorageSync("user").uid;
-      }
-      if (uid == 0){
-        t.WxService.navigateTo("/pages/decrypt/index");
-      }
-      http.get('config').then(data => {
-        this.setData({ config: data });
-      });
-      http.get('user', { uid: wx.getStorageSync("user").id}).then(data => {
-        if (data.percent == 100){
-          this.goUser();
-        }
-      });
+      // http.get('config').then(data => {
+      //   if (data.pian == "1") {
+      //     wx.setNavigationBarTitle({
+      //       title: '联系我们',
+      //     })
+      //     wx.redirectTo({
+      //       url: '../user/company/index',
+      //     });
+      //     return false;
+      //   }
+      //   wx.setNavigationBarTitle({
+      //     title: data.sname,
+      //   });
+      // });
+      // if (!wx.getStorageSync('lat')) {
+      //   wx.getLocation({
+      //     type: "wgs84",
+      //     success: function (res) {
+      //       wx.setStorageSync('lat', res.latitude);
+      //       wx.setStorageSync('lng', res.longitude);
+      //     },
+      //   })
+      // }
+      // var uid = 0;
+      // if (wx.getStorageSync("user") && (wx.getStorageSync("user").uid == 0)){
+      //   uid = 0;
+      // } else if (!wx.getStorageSync("user")){
+      //   uid = 0;
+      // }else{
+      //   uid = wx.getStorageSync("user").uid;
+      // }
+      // if (uid == 0){
+      //   t.WxService.navigateTo("/pages/decrypt/index");
+      // }
+      // http.get('config').then(data => {
+      //   this.setData({ config: data });
+      // });
+      // http.get('user', { uid: wx.getStorageSync("user").id}).then(data => {
+      //   if (data.percent == 100){
+      //     this.goUser();
+      //   }
+      // });
         /*
         this.itemData = t.HttpResource("/start.php"), this.userAuthorization(), o.addNotification("DecryptNotification", this.didNotification, this)
         */

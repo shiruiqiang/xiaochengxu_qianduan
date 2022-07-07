@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/register/step/register",
+    "pages/register/step/entrance",
+    
 
 
 

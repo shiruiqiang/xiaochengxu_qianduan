@@ -1,0 +1,15 @@
+<import src="../../../wxParse/wxParse.wxml" />
+<block wx:if="undefined">
+    <view class="start-wrap">
+        <view class="bg" style="background-image:url('{{config.url}}{{config.startimg}}');"></view>
+        <view class="start-box">
+            <view class="start-btn">
+                <button wx:if="{{step == 1}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="btn-default">授权登录</button>
+                <button wx:if="{{step == 2}}" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class="btn-default">获取手机号</button>
+            </view>
+            <navigator class="start-txt" openType="redirectTo" url="/pages/index/index">先逛逛吧
+                <i class="start-txt-ico"></i>
+            </navigator>
+        </view>
+    </view>
+</block>

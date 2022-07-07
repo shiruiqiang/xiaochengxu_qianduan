@@ -50,31 +50,87 @@ Page({
       city: [],
       multiIndex: [0, 0],
       area: 0,
-      files: []
+      files: [],
+      headPortraitUrl: ""
       //地址帅选 end
   },
   onLoad: function(t) {
       this.initValidate();
       var a = this;
-      http.get('user',{uid:wx.getStorageSync("user").id}).then(data => {
-        a.setData({user:data});
-        if(data.mbind == 0){
-          a.setData({ msglogin: 1, auth1:1});
-        }
-        a.setData({ avatar: data.avatar,"form":data});
-      });
-      http.get('config').then(data => {
-        a.setData({ citys: data.citys, xinyang: data.xinyang});
-      })
       var def = n.default;
       a.setData({ cate: def});
       a.getCate();
-      this.getcity();
-      this.$wuxPickerCity = o.Wux().$wuxPickerCity, this.$wuxToast = o.Wux().$wuxToast;
+
+      var userinfo = wx.getStorageSync("userinfo")
+      if(!!userinfo){
+          // 获得openid、用户信息回显
+          this.setData({
+              form: userinfo
+          })
+          // var ABC = a.isNotEmpty(userinfo.isDemandKid + "" )? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : ""
+          this.setData({
+              headPortraitUrl: userinfo.headPortraitUrl,
+              "cate.show.isKid": a.isNotEmpty(userinfo.isKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isKid}).name : "",
+              "cate.show.isDemandKid": a.isNotEmpty(userinfo.isDemandKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : "",
+              "cate.show.isSmoking": a.isNotEmpty(userinfo.isSmoking) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isSmoking}).name : "",
+              "cate.show.isDrink": a.isNotEmpty(userinfo.isDrink) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDrink}).name : "",
+              files: !!userinfo.pictureJson? JSON.parse(userinfo.pictureJson) : [],
+          })
+
+      }else{
+          a.setData({ "msglogin": 1 });
+          wx.login({
+              success (res) {
+                  if (res.code) {
+                      //发起网络请求
+                      wx.request({
+                          url: o.server_url + '/mini_program/getOpenid',
+                          method: 'GET',
+                          data: {
+                              code: res.code
+                          },
+                          success (res) {
+                              debugger
+                              console.log("******************************   " + res.data.msg)
+                              if(res.data.code == 200){
+                                  this.setData({
+                                      openid: res.data.msg
+                                  })
+                              }
+                          }
+                      })
+                  } else {
+                      console.log('登录失败！' + res.errMsg)
+                  }
+              }
+          })
+      }
+
+
+
+
+
+
+      // http.get('user',{uid:wx.getStorageSync("user").id}).then(data => {
+      //   a.setData({user:data});
+      //   if(data.mbind == 0){
+      //     a.setData({ msglogin: 1, auth1:1});
+      //   }
+      //   a.setData({ avatar: data.avatar,"form":data});
+      // });
+      // http.get('config').then(data => {
+      //   a.setData({ citys: data.citys, xinyang: data.xinyang});
+      // })
+      // this.getcity();
+      // this.$wuxPickerCity = o.Wux().$wuxPickerCity, this.$wuxToast = o.Wux().$wuxToast;
   },
   onShow: function() {
 
   },
+    isNotEmpty: function(value){
+        var aaa =  value != null && value != undefined
+        return aaa
+    },
     getName: function(t) {
     this.setData({
         "form.name": t.detail.value
@@ -154,7 +210,7 @@ Page({
     hometownChange: function (t) {
         console.log('picker发送选择改变，携带值为', t.detail.value)
         this.setData({
-            "form.hometown": t.detail.value,
+            "form.hometown": JSON.stringify(t.detail.value),
             "form.hometownStr": t.detail.value[0] + t.detail.value[1] + t.detail.value[2]
         })
         // var a = this;
@@ -171,7 +227,7 @@ Page({
     workplaceChange: function (t) {
         console.log('picker发送选择改变，携带值为', t.detail.value)
         this.setData({
-            "form.workplace": t.detail.value,
+            "form.workplace": JSON.stringify(t.detail.value),
             "form.workplaceStr": t.detail.value[0] + t.detail.value[1] + t.detail.value[2]
         })
         // var a = this;
@@ -745,7 +801,7 @@ Page({
         },
 
     chooseImage2: function() {
-        var t = this;
+        var tt = this;
         wx.showToast({
             title: '正在上传...',
             icon: 'loading',
@@ -762,15 +818,16 @@ Page({
                 // siteroot = siteroot.replace('app/index.php', 'web/index.php');
                 // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
                 wx.uploadFile({
-                    url: "http://localhost/common/upload",
+                    url: "http://localhost:8080/common/upload",
                     filePath: tempFilePaths[0],
                     name: 'file',
                     formData: {},
                     header: {},
                     success: function (res) {
-                        var fileArray = t.data.files;
+                        debugger
+                        var fileArray = tt.data.files;
                         fileArray.push(JSON.parse(res.data).url)
-                        t.setData({ "files": fileArray });
+                        tt.setData({ "files": fileArray });
                         wx.hideToast();
                     },
                 })
@@ -791,7 +848,7 @@ Page({
             }),
                 // http.get('setimgs', { imgs: a.data.files.join(','), uid: wx.getStorageSync("user").id }).then(data => { })
                     wx.request({
-                        url: 'http://localhost/common/delete/file', //仅为示例，并非真实的接口地址
+                        url: 'http://localhost:8080/common/delete/file', //仅为示例，并非真实的接口地址
                         method: 'GET',
                         data: {"resource": e.substring(e.indexOf("/upload"))},
                         header: {
@@ -819,15 +876,15 @@ Page({
             // this.showModal(error)
             return false
         }
-        if(this.files.length == 0){
+        if(this.data.files.length == 0){
             a.showToastErr("相册不能为空");
             return false
-        }else if(this.files.length > 2){
+        }else if(this.data.files.length > 2){
             a.showToastErr("相册不能大于两张");
             return false
         }else{
             this.setData({
-                "form.pictureJson": JSON.stringify(this.files)
+                "form.pictureJson": JSON.stringify(this.data.files)
             })
         }
         // if("" == e.nickname){
@@ -888,13 +945,15 @@ Page({
         // }
 
         wx.request({
-            url: 'http://localhost/mini_program/member_save', //仅为示例，并非真实的接口地址
+            url: 'http://localhost:8080/mini_program/member_save', //仅为示例，并非真实的接口地址
             method: 'POST',
             data: e,
             header: {
                 'content-type': 'application/json' // 默认值
             },
             success (res) {
+
+                wx.setStorageSync('userinfo', a.data.form)
                 console.log("******************************   " + res.data)
             }
         })
@@ -908,8 +967,107 @@ Page({
         //   }, 2500);
         // });
     },
+    uploadAvatar: function() {
+        var t = this;
+        wx.showToast({
+            title: '正在上传...',
+            icon: 'loading',
+            mask: true,
+            duration: 10000
+        });
+        if(!!this.data.form.headPortraitUrl){
+            var url = this.data.form.headPortraitUrl;
+            wx.request({
+                url: 'http://localhost:8080/common/delete/file', //仅为示例，并非真实的接口地址
+                method: 'GET',
+                data: {"resource": url.substring(url.indexOf("/upload"))},
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success (res) {
+                    console.log("******************************   " + res.data)
+                }
+            })
+        }
+        wx.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+            sourceType: ['album', 'camera'],
+            success: function (res) {
+                var tempFilePaths = res.tempFilePaths;
+                // let siteroot = app.siteInfo.siteroot;
+                // siteroot = siteroot.replace('app/index.php', 'web/index.php');
+                // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
+                wx.uploadFile({
+                    url: "http://localhost:8080/common/upload",
+                    filePath: tempFilePaths[0],
+                    name: 'file',
+                    formData: {},
+                    header: {},
+                    success: function (res) {
+                        var array_ = [];
+                        array_.push(JSON.parse(res.data).url)
+                        t.setData({ "form.headPortraitUrl": JSON.stringify(array_) });
+                        t.setData({ "headPortraitUrl": JSON.parse(res.data).url });
+                        wx.hideToast();
+                    },
+                })
+            },
+        })
+    },
+    getPhoneNumber: function(e) {
+        console.log(e.detail.code)
+        var t = this;
+        if(!!e.detail.code){
+            wx.request({
+                url: o.server_url + '/mini_program/getPhoneNumber', //仅为示例，并非真实的接口地址
+                method: 'GET',
+                data: {code: e.detail.code},
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success (res) {
+                    if(res.data.code == 200){
+                        t.setData({ "form.wechatPhone": res.data.msg });
+                        t.setData({ "msglogin": 0 });
+                    }else{
+                        wx.showToast({
+                            title: '授权失败',
+                            icon: 'error',
+                            duration: 2000
+                        })
+                    }
+
+                }
+            })
+        }
 
 
+
+        // var t = this;
+        // wx.login({
+        //   success: function (o) {
+        //     var d = {
+        //       code: o.code,
+        //       vi: e.detail.iv,
+        //       encryptedData: e.detail.encryptedData,
+        //       session_key: wx.getStorageSync("user").session_key,
+        //       uid: wx.getStorageSync("user").id
+        //     }
+        //     http.post('userset', d).then(data => {
+        //       t.setData({ mobile: data });
+        //       wx.showToast({
+        //         title: '授权成功',
+        //         duration:2500,
+        //         icon:"none",
+        //       })
+        //       t.setData({
+        //         msglogin: 0
+        //       })
+        //     });
+        //   }
+        // })
+    },
 
 
 
@@ -1011,37 +1169,7 @@ Page({
       */
 
   },
-  uploadAvatar: function() {
-      var t = this;
-      wx.showToast({
-        title: '正在上传...',
-        icon: 'loading',
-        mask: true,
-        duration: 10000
-      });
-      wx.chooseImage({
-        count: 1,
-        sizeType: ['compressed'],
-        sourceType: ['album', 'camera'],
-        success: function (res) {
-          var tempFilePaths = res.tempFilePaths;
-          // let siteroot = app.siteInfo.siteroot;
-          // siteroot = siteroot.replace('app/index.php', 'web/index.php');
-          // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
-          wx.uploadFile({
-            url: "http://localhost/common/upload",
-            filePath: tempFilePaths[0],
-            name: 'file',
-            formData: {},
-            header: {},
-            success: function (res) {
-              t.setData({ "form.avatar": JSON.parse(res.data).url });
-              wx.hideToast();
-            },
-          })
-        },
-      })
-  },
+
   chooseImage: function(t) {
       var a = ["album", "camera"];
       t && (a = [t]), wx.chooseImage({
@@ -1275,32 +1403,7 @@ Page({
     var a = this;
     a.setData({ auth1: 1, auth2: 0 });
   },
-  getPhoneNumber: function(e) {
 
-      var t = this;
-      wx.login({
-        success: function (o) {
-          var d = {
-            code: o.code,
-            vi: e.detail.iv,
-            encryptedData: e.detail.encryptedData,
-            session_key: wx.getStorageSync("user").session_key,
-            uid: wx.getStorageSync("user").id
-          }
-          http.post('userset', d).then(data => {
-            t.setData({ mobile: data });
-            wx.showToast({
-              title: '授权成功',
-              duration:2500,
-              icon:"none",
-            })
-            t.setData({
-              msglogin: 0
-            })
-          });
-        }
-      })
-  },
   submitForm_regquick: function(t) {
       var a = this,
           e = this,

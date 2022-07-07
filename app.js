@@ -35,7 +35,7 @@ App({
     console.log(o);
   },
   onShow: function () {
-    
+
   },
   Wux: t.
     default,
@@ -49,5 +49,7 @@ App({
   WxService: new u.
     default,
   Tools: new i.
-    default
+    default,
+  server_url: "http://localhost:8080"
+
 })
