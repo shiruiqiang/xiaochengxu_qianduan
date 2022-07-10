@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", {
 }), exports.
 default = {
     sexData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 0,
@@ -13,7 +13,7 @@ default = {
         name: "女"
     }],
     educationData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,
@@ -32,7 +32,7 @@ default = {
         name: "博士研究生及以上"
     }],
     incomeData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,
@@ -51,7 +51,7 @@ default = {
         name: "30000元以上"
     }],
     marriageData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,
@@ -70,7 +70,7 @@ default = {
         name: "丧偶"
     }],
     xq_yes_no_data:[{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 0,
@@ -80,7 +80,7 @@ default = {
         name: "是"
     }],
     carData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,
@@ -93,7 +93,7 @@ default = {
         name: "全款"
     }],
     houseData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,
@@ -109,7 +109,7 @@ default = {
         name: "全款多房"
     }],
     religionData: [{
-        value: -1,
+        value: "",
         name: "请选择"
     }, {
         value: 1,

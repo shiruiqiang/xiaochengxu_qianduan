@@ -51,7 +51,8 @@ Page({
       multiIndex: [0, 0],
       area: 0,
       files: [],
-      headPortraitUrl: ""
+      headPortraitUrl: [],
+      openid: ""
       //地址帅选 end
   },
   onLoad: function(t) {
@@ -69,11 +70,11 @@ Page({
           })
           // var ABC = a.isNotEmpty(userinfo.isDemandKid + "" )? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : ""
           this.setData({
-              headPortraitUrl: userinfo.headPortraitUrl,
-              "cate.show.isKid": a.isNotEmpty(userinfo.isKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isKid}).name : "",
-              "cate.show.isDemandKid": a.isNotEmpty(userinfo.isDemandKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : "",
-              "cate.show.isSmoking": a.isNotEmpty(userinfo.isSmoking) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isSmoking}).name : "",
-              "cate.show.isDrink": a.isNotEmpty(userinfo.isDrink) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDrink}).name : "",
+              headPortraitUrl: !!userinfo.headPortraitUrl? JSON.parse(userinfo.headPortraitUrl) : [],
+              // "cate.show.isKid": a.isNotEmpty(userinfo.isKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isKid}).name : "",
+              // "cate.show.isDemandKid": a.isNotEmpty(userinfo.isDemandKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : "",
+              // "cate.show.isSmoking": a.isNotEmpty(userinfo.isSmoking) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isSmoking}).name : "",
+              // "cate.show.isDrink": a.isNotEmpty(userinfo.isDrink) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDrink}).name : "",
               files: !!userinfo.pictureJson? JSON.parse(userinfo.pictureJson) : [],
           })
 
@@ -90,11 +91,36 @@ Page({
                               code: res.code
                           },
                           success (res) {
-                              debugger
+
                               console.log("******************************   " + res.data.msg)
                               if(res.data.code == 200){
-                                  this.setData({
+                                  a.setData({
                                       openid: res.data.msg
+                                  })
+                                  wx.request({
+                                      url: o.server_url + '/mini_program/getMemberbyOpenid',
+                                      method: 'GET',
+                                      data: {
+                                          openid: a.data.openid
+                                      },
+                                      success (res) {
+                                          console.log("******************************   " + res.data.msg)
+                                          if(res.data.code == 200){
+                                              a.setData({
+                                                  form: res.data.data
+                                              })
+                                              a.setData({ "msglogin": 0 });
+                                              wx.setStorageSync('userinfo', a.data.form)
+                                              a.setData({
+                                                  headPortraitUrl: !!a.data.form.headPortraitUrl? JSON.parse(a.data.form.headPortraitUrl) : [],
+                                                  // "cate.show.isKid": a.isNotEmpty(userinfo.isKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isKid}).name : "",
+                                                  // "cate.show.isDemandKid": a.isNotEmpty(userinfo.isDemandKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDemandKid}).name : "",
+                                                  // "cate.show.isSmoking": a.isNotEmpty(userinfo.isSmoking) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isSmoking}).name : "",
+                                                  // "cate.show.isDrink": a.isNotEmpty(userinfo.isDrink) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDrink}).name : "",
+                                                  files: !!a.data.form.pictureJson? JSON.parse(a.data.form.pictureJson) : [],
+                                              })
+                                          }
+                                      }
                                   })
                               }
                           }
@@ -254,7 +280,7 @@ Page({
         this.setData({
             // "cate.marriageActionIndex": t.detail.value,
             "form.isKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
-            "cate.show.isKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name,
+            "form.isKidStr": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name,
         })
     },
     occupationChange: function(t) {
@@ -267,7 +293,7 @@ Page({
         this.setData({
             // "cate.marriageActionIndex": t.detail.value,
             "form.isDemandKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
-            "cate.show.isDemandKid": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+            "form.isDemandKidStr": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
         })
     },
     carChange: function(t) {
@@ -314,7 +340,7 @@ Page({
         this.setData({
             // "cate.marriageActionIndex": t.detail.value,
             "form.isSmoking": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
-            "cate.show.isSmoking": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+            "form.isSmokingStr": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
         })
     },
     isDrinkChange: function(t) {
@@ -322,7 +348,7 @@ Page({
         this.setData({
             // "cate.marriageActionIndex": t.detail.value,
             "form.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].value,
-            "cate.show.isDrink": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
+            "form.isDrinkStr": this.data.cate.dictionaries.xq_yes_no_data[t.detail.value].name
         })
     },
     selfDescriptionBlur: function(e) {
@@ -952,8 +978,22 @@ Page({
                 'content-type': 'application/json' // 默认值
             },
             success (res) {
+                debugger
+                if(res.data.code == 200){
+                    wx.setStorageSync('userinfo', a.data.form)
+                    wx.showToast({
+                        title: '保存成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                }else{
+                    wx.showToast({
+                        title: '保存成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                }
 
-                wx.setStorageSync('userinfo', a.data.form)
                 console.log("******************************   " + res.data)
             }
         })
@@ -975,8 +1015,8 @@ Page({
             mask: true,
             duration: 10000
         });
-        if(!!this.data.form.headPortraitUrl){
-            var url = this.data.form.headPortraitUrl;
+        if(this.data.headPortraitUrl.length > 0){
+            var url = this.data.headPortraitUrl[0];
             wx.request({
                 url: 'http://localhost:8080/common/delete/file', //仅为示例，并非真实的接口地址
                 method: 'GET',
@@ -1008,7 +1048,7 @@ Page({
                         var array_ = [];
                         array_.push(JSON.parse(res.data).url)
                         t.setData({ "form.headPortraitUrl": JSON.stringify(array_) });
-                        t.setData({ "headPortraitUrl": JSON.parse(res.data).url });
+                        t.setData({ "headPortraitUrl": array_ });
                         wx.hideToast();
                     },
                 })

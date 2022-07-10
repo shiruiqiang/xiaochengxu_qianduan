@@ -11,7 +11,7 @@
                     <form bindsubmit="submitForm" reportSubmit="true">
                       <view class="profile-avatar">
                         <view bindtap="uploadAvatar" class="info-photo">
-                          <span class="img" style="background-image:url('{{headPortraitUrl}}')"></span>
+                          <span wx:for="{{headPortraitUrl}}" class="img" style="background-image:url('{{item}}')"></span>
                           <block wx:if="{{!form.headPortraitUrl}}">
                             <i class="txt">上传头像</i>
                           </block>
@@ -129,7 +129,7 @@
                                   value="0">
                               <view class="tit">有没有小孩</view>
                               <view class="select">
-                                {{cate.show.isKid ? cate.show.isKid : '请选择'}}
+                                {{form.isKidStr ? form.isKidStr : '请选择'}}
                               </view>
                           </picker>
                       </view>
@@ -148,7 +148,7 @@
                             value="0">
                                 <view class="tit">是否想要小孩</view>
                                 <view class="select">
-                                   {{cate.show.isDemandKid ? cate.show.isDemandKid : '请选择'}}
+                                   {{form.isDemandKidStr ? form.isDemandKidStr : '请选择'}}
                                 </view>
                             </picker>
                         </view>
@@ -222,7 +222,7 @@
                                             value="0">
                                         <view class="tit">是否抽烟</view>
                                         <view class="select">
-                                            {{cate.show.isSmoking ? cate.show.isSmoking : '请选择'}}
+                                            {{form.isSmokingStr ? form.isSmokingStr : '请选择'}}
                                         </view>
                                     </picker>
                                 </view>
@@ -231,7 +231,7 @@
                                             value="0">
                                         <view class="tit">是否喝酒</view>
                                         <view class="select">
-                                            {{cate.show.isDrink ? cate.show.isDrink : '请选择'}}
+                                            {{form.isDrinkStr ? form.isDrinkStr : '请选择'}}
                                         </view>
                                     </picker>
                                 </view>
