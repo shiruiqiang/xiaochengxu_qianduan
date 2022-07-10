@@ -97,6 +97,9 @@ Page({
                                   a.setData({
                                       openid: res.data.msg
                                   })
+                                  a.setData({
+                                      "form.wechatId": res.data.msg
+                                  })
                                   wx.request({
                                       url: o.server_url + '/mini_program/getMemberbyOpenid',
                                       method: 'GET',
