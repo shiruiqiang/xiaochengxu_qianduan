@@ -181,7 +181,7 @@
                               <view class="input">
                                   <input bindinput="weChatChange" class="input-txt"
                                     placeholder="填写微信号" placeholderClass="placeholder" type="text"
-                                    value="{{form.weChat}}">
+                                    value="{{form.wechat}}">
                                   </input>
                               </view>
                       </view>

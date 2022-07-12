@@ -114,7 +114,6 @@ Page({
                                                   form: res.data.data
                                               })
                                               a.setData({ "msglogin": 0 });
-                                              wx.setStorageSync('userinfo', a.data.form)
                                               a.setData({
                                                   headPortraitUrl: !!a.data.form.headPortraitUrl? JSON.parse(a.data.form.headPortraitUrl) : [],
                                                   // "cate.show.isKid": a.isNotEmpty(userinfo.isKid) ? this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isKid}).name : "",
@@ -122,7 +121,9 @@ Page({
                                                   // "cate.show.isSmoking": a.isNotEmpty(userinfo.isSmoking) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isSmoking}).name : "",
                                                   // "cate.show.isDrink": a.isNotEmpty(userinfo.isDrink) ?this.data.cate.dictionaries.xq_yes_no_data.find(i => {return i.value == userinfo.isDrink}).name : "",
                                                   files: !!a.data.form.pictureJson? JSON.parse(a.data.form.pictureJson) : [],
+                                                  "form.phone2": a.data.form.phone
                                               })
+                                              wx.setStorageSync('userinfo', a.data.form)
                                           }
                                       }
                                   })
@@ -318,7 +319,7 @@ Page({
     },
     weChatChange: function(t) {
         this.setData({
-            "form.weChat": t.detail.value
+            "form.wechat": t.detail.value
         })
     },
     religionChange: function(t) {
@@ -593,7 +594,7 @@ Page({
             houseStr: {
                 required: true,
             },
-            weChat: {
+            wechat: {
                 required: true,
                 minlength: 2,
                 maxlength: 50
@@ -735,7 +736,7 @@ Page({
             houseStr: {
                 required: "买房情况不能为空",
             },
-            weChat: {
+            wechat: {
                 required: "微信号不能为空",
                 minlength: '微信号长度不少于2位',
                 maxlength: '微信号长度不多于50位'
@@ -848,7 +849,7 @@ Page({
                 // siteroot = siteroot.replace('app/index.php', 'web/index.php');
                 // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
                 wx.uploadFile({
-                    url: "http://localhost:8080/common/upload",
+                    url: o.server_url + "/common/upload",
                     filePath: tempFilePaths[0],
                     name: 'file',
                     formData: {},
@@ -878,7 +879,7 @@ Page({
             }),
                 // http.get('setimgs', { imgs: a.data.files.join(','), uid: wx.getStorageSync("user").id }).then(data => { })
                     wx.request({
-                        url: 'http://localhost:8080/common/delete/file', //仅为示例，并非真实的接口地址
+                        url: o.server_url + '/common/delete/file', //仅为示例，并非真实的接口地址
                         method: 'GET',
                         data: {"resource": e.substring(e.indexOf("/upload"))},
                         header: {
@@ -902,15 +903,30 @@ Page({
         // 传入表单数据，调用验证方法
         if (!this.WxValidate.checkForm(e)) {
             const error = this.WxValidate.errorList[0]
-            a.showToastErr(error.msg);
+            // a.showToastErr(error.msg);
             // this.showModal(error)
+            wx.showToast({
+                title: error.msg,
+                icon: 'error',
+                duration: 2000
+            })
             return false
         }
         if(this.data.files.length == 0){
-            a.showToastErr("相册不能为空");
+            // a.showToastErr("相册不能为空");
+            wx.showToast({
+                title: '相册不能为空',
+                icon: 'error',
+                duration: 2000
+            })
             return false
         }else if(this.data.files.length > 2){
-            a.showToastErr("相册不能大于两张");
+            // a.showToastErr("相册不能大于两张");
+            wx.showToast({
+                title: '相册不能大于两张',
+                icon: 'error',
+                duration: 2000
+            })
             return false
         }else{
             this.setData({
@@ -975,7 +991,7 @@ Page({
         // }
 
         wx.request({
-            url: 'http://localhost:8080/mini_program/member_save', //仅为示例，并非真实的接口地址
+            url: o.server_url + '/mini_program/member_save', //仅为示例，并非真实的接口地址
             method: 'POST',
             data: e,
             header: {
@@ -992,8 +1008,8 @@ Page({
                     })
                 }else{
                     wx.showToast({
-                        title: '保存成功',
-                        icon: 'success',
+                        title: '保存失败',
+                        icon: 'error',
                         duration: 2000
                     })
                 }
@@ -1022,7 +1038,7 @@ Page({
         if(this.data.headPortraitUrl.length > 0){
             var url = this.data.headPortraitUrl[0];
             wx.request({
-                url: 'http://localhost:8080/common/delete/file', //仅为示例，并非真实的接口地址
+                url: o.server_url + '/common/delete/file', //仅为示例，并非真实的接口地址
                 method: 'GET',
                 data: {"resource": url.substring(url.indexOf("/upload"))},
                 header: {
@@ -1043,7 +1059,7 @@ Page({
                 // siteroot = siteroot.replace('app/index.php', 'web/index.php');
                 // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
                 wx.uploadFile({
-                    url: "http://localhost:8080/common/upload",
+                    url: o.server_url + "/common/upload",
                     filePath: tempFilePaths[0],
                     name: 'file',
                     formData: {},
