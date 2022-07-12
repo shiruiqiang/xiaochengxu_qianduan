@@ -3,18 +3,19 @@ function t(t) {
       default: t
   }
 }
-var a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(t) {
-      return typeof t
-  } : function(t) {
-      return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t
-  },
+var
+  //   a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(t) {
+  //     return typeof t
+  // } : function(t) {
+  //     return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t
+  // },
     // e = t(require("../../../helpers/WxValidate")),
   n = t(require("../../../json/cate.js")),
-  i = t(require("../../../etc/config")),
+  // i = t(require("../../../etc/config")),
   o = getApp(),
-  r = require("../../../utils/auth.js"),
+  // r = require("../../../utils/auth.js"),
   c = require("../../../utils/WxNotificationCenter.js");
-const app = getApp()
+// const app = getApp()
 import http from '../../util/request.js';
 
 import WxValidate from '../../../utils_zj/WxValidate'
@@ -29,27 +30,27 @@ Page({
           birth: "",
           workCityString: ""
       },
-      logged: 0,
+      // logged: 0,
       msglogin: 0,
-      auth1:0,
-      auth2: 0,
-      mobile: {
-          number: "",
-          phone_verify_status: !1,
-          phone_verify_expiry_time: 60,
-          phone_verify_text: "获取验证码"
-      },
-      showModalStatus: [!1],
-      isload:0,
+      // auth1:0,
+      // auth2: 0,
+      // mobile: {
+      //     number: "",
+      //     phone_verify_status: !1,
+      //     phone_verify_expiry_time: 60,
+      //     phone_verify_text: "获取验证码"
+      // },
+      // showModalStatus: [!1],
+      // isload:0,
       cate:null,
-      citys:[],
+      // citys:[],
       //地址帅选 start
-      address1: "请选择",
-      cityindex: 0,
-      areaindex: 0,
-      city: [],
-      multiIndex: [0, 0],
-      area: 0,
+      // address1: "请选择",
+      // cityindex: 0,
+      // areaindex: 0,
+      // city: [],
+      // multiIndex: [0, 0],
+      // area: 0,
       files: [],
       headPortraitUrl: [],
       openid: ""
@@ -156,10 +157,10 @@ Page({
   onShow: function() {
 
   },
-    isNotEmpty: function(value){
-        var aaa =  value != null && value != undefined
-        return aaa
-    },
+    // isNotEmpty: function(value){
+    //     var aaa =  value != null && value != undefined
+    //     return aaa
+    // },
     getName: function(t) {
     this.setData({
         "form.name": t.detail.value
@@ -1145,99 +1146,99 @@ Page({
 
 
 
-  renderForm: function() {
-      var t = this;
-      this.info.getAsync({
-          action: "do"
-      }).then(function(a) {
-          if (200 == a.code) {
-              var e = t.userinfo = a.data.userinfo;
-              t.getCate();
-              var n = t.data.cate;
-              n.genderData.forEach(function(t, a) {
-                  t.value == e.gender && (n.genderActionIndex = a)
-              }), n.heightData.forEach(function(t, a) {
-                  t.value === e.height && (n.heightActionIndex = a)
-              }), n.salaryData.forEach(function(t, a) {
-                  t.value === e.salary && (n.salaryActionIndex = a)
-              }), n.eduData.forEach(function(t, a) {
-                  t.value === e.education && (n.eduActionIndex = a)
-              }), n.marriageData.forEach(function(t, a) {
-                  t.value === e.marriage && (n.marriageActionIndex = a)
-              }), n.childrenData.forEach(function(t, a) {
-                  t.value === e.children && (n.childrenActionIndex = a)
-              }), n.wantchildrenData.forEach(function(t, a) {
-                  t.value == e.wantChildren && (n.wantchildrenActionIndex = a)
-              }), n.occupationData.forEach(function(t, a) {
-                  t.value == e.occupation && (n.occupationActionIndex = a)
-              }), n.vehicleData.forEach(function(t, a) {
-                  t.value == e.vehicle && (n.vehicleActionIndex = a)
-              }), n.houseData.forEach(function(t, a) {
-                  t.value == e.house && (n.houseActionIndex = a)
-              }), n.weightData.forEach(function(t, a) {
-                  t.value == e.weight && (n.weightActionIndex = a)
-              }), n.bodyData.forEach(function(t, a) {
-                  t.value == e.body && n.bodyActionIndex
-              }), n.smokingData.forEach(function(t, a) {
-                  t.value == e.smoking && (n.smokingActionIndex = a)
-              }), n.drinkingData.forEach(function(t, a) {
-                  t.value == e.drinking && (n.drinkingActionIndex = a)
-              }), n.constellationData.forEach(function(t, a) {
-                  t.value == e.constellation && (n.constellationActionIndex = a)
-              }), n.stockData.forEach(function(t, a) {
-                  t.value == e.stock && (n.stockActionIndex = a)
-              }), n.marryData.forEach(function(t, a) {
-                  t.value == e.marryDate && (n.marryActionIndex = a)
-              }), n.showinfoData.forEach(function(t, a) {
-                  t.value == e.showinfoData && (n.showinfoActionIndex = a)
-              }), e.phone || (t.data.showModalStatus[0] = !0), t.setData({
-                  form: e,
-                  cate: n,
-                  logged: 1,
-                  showModalStatus: t.data.showModalStatus
-              })
-          }
-      })
-  },
-  didNotification: function(t) {
-      this.setData({
-          "form.avatarUrl": t.avatar
-      })
-  },
-  userAuthorization: function() {
-      /*
-      o.WxService.getStorageSync("loginSession") ? "object" == a(o.WxService.getStorageSync("loginSession")) ? (o.WxService.removeStorageSync("loginSession"), r.authorization()) : o.WxService.getStorageSync("us") ? wx.reLaunch({
-          url: "/pages/index/index"
-      }) : (wx.getStorageSync("userlocation") || r.wechatAreaData(), this.getUserInfo()) : o.WxService.navigateTo("/pages/decrypt/index")
-      */
+  // renderForm: function() {
+  //     var t = this;
+  //     this.info.getAsync({
+  //         action: "do"
+  //     }).then(function(a) {
+  //         if (200 == a.code) {
+  //             var e = t.userinfo = a.data.userinfo;
+  //             t.getCate();
+  //             var n = t.data.cate;
+  //             n.genderData.forEach(function(t, a) {
+  //                 t.value == e.gender && (n.genderActionIndex = a)
+  //             }), n.heightData.forEach(function(t, a) {
+  //                 t.value === e.height && (n.heightActionIndex = a)
+  //             }), n.salaryData.forEach(function(t, a) {
+  //                 t.value === e.salary && (n.salaryActionIndex = a)
+  //             }), n.eduData.forEach(function(t, a) {
+  //                 t.value === e.education && (n.eduActionIndex = a)
+  //             }), n.marriageData.forEach(function(t, a) {
+  //                 t.value === e.marriage && (n.marriageActionIndex = a)
+  //             }), n.childrenData.forEach(function(t, a) {
+  //                 t.value === e.children && (n.childrenActionIndex = a)
+  //             }), n.wantchildrenData.forEach(function(t, a) {
+  //                 t.value == e.wantChildren && (n.wantchildrenActionIndex = a)
+  //             }), n.occupationData.forEach(function(t, a) {
+  //                 t.value == e.occupation && (n.occupationActionIndex = a)
+  //             }), n.vehicleData.forEach(function(t, a) {
+  //                 t.value == e.vehicle && (n.vehicleActionIndex = a)
+  //             }), n.houseData.forEach(function(t, a) {
+  //                 t.value == e.house && (n.houseActionIndex = a)
+  //             }), n.weightData.forEach(function(t, a) {
+  //                 t.value == e.weight && (n.weightActionIndex = a)
+  //             }), n.bodyData.forEach(function(t, a) {
+  //                 t.value == e.body && n.bodyActionIndex
+  //             }), n.smokingData.forEach(function(t, a) {
+  //                 t.value == e.smoking && (n.smokingActionIndex = a)
+  //             }), n.drinkingData.forEach(function(t, a) {
+  //                 t.value == e.drinking && (n.drinkingActionIndex = a)
+  //             }), n.constellationData.forEach(function(t, a) {
+  //                 t.value == e.constellation && (n.constellationActionIndex = a)
+  //             }), n.stockData.forEach(function(t, a) {
+  //                 t.value == e.stock && (n.stockActionIndex = a)
+  //             }), n.marryData.forEach(function(t, a) {
+  //                 t.value == e.marryDate && (n.marryActionIndex = a)
+  //             }), n.showinfoData.forEach(function(t, a) {
+  //                 t.value == e.showinfoData && (n.showinfoActionIndex = a)
+  //             }), e.phone || (t.data.showModalStatus[0] = !0), t.setData({
+  //                 form: e,
+  //                 cate: n,
+  //                 logged: 1,
+  //                 showModalStatus: t.data.showModalStatus
+  //             })
+  //         }
+  //     })
+  // },
+  // didNotification: function(t) {
+  //     this.setData({
+  //         "form.avatarUrl": t.avatar
+  //     })
+  // },
+  // userAuthorization: function() {
+  //     /*
+  //     o.WxService.getStorageSync("loginSession") ? "object" == a(o.WxService.getStorageSync("loginSession")) ? (o.WxService.removeStorageSync("loginSession"), r.authorization()) : o.WxService.getStorageSync("us") ? wx.reLaunch({
+  //         url: "/pages/index/index"
+  //     }) : (wx.getStorageSync("userlocation") || r.wechatAreaData(), this.getUserInfo()) : o.WxService.navigateTo("/pages/decrypt/index")
+  //     */
+  //
+  // },
 
-  },
-
-  chooseImage: function(t) {
-      var a = ["album", "camera"];
-      t && (a = [t]), wx.chooseImage({
-          sizeType: ["original", "compressed"],
-          sourceType: a,
-          count: 1,
-          success: function(t) {
-              var a = t.tempFilePaths[0];
-              wx.navigateTo({
-                  url: "/pages/userphoto/upload/upload?src=" + a
-              })
-          }
-      })
-  },
-  getWechat: function(t) {
-      this.setData({
-          "userInfo.wechat": t.detail.value
-      })
-  },
-  getQq: function(t) {
-      this.setData({
-          "userInfo.qq": t.detail.value
-      })
-  },
-  getUserInfo: function() {
+  // chooseImage: function(t) {
+  //     var a = ["album", "camera"];
+  //     t && (a = [t]), wx.chooseImage({
+  //         sizeType: ["original", "compressed"],
+  //         sourceType: a,
+  //         count: 1,
+  //         success: function(t) {
+  //             var a = t.tempFilePaths[0];
+  //             wx.navigateTo({
+  //                 url: "/pages/userphoto/upload/upload?src=" + a
+  //             })
+  //         }
+  //     })
+  // },
+  // getWechat: function(t) {
+  //     this.setData({
+  //         "userInfo.wechat": t.detail.value
+  //     })
+  // },
+  // getQq: function(t) {
+  //     this.setData({
+  //         "userInfo.qq": t.detail.value
+  //     })
+  // },
+  // getUserInfo: function() {
       /*
       var t = this,
           a = o.globalData.userInfo;
@@ -1249,255 +1250,255 @@ Page({
           })
       })
       */
-  },
-  bindPickerChange: function(t) {
-      this.setData({
-          index: t.detail.value
-      })
-  },
+  // },
+  // bindPickerChange: function(t) {
+  //     this.setData({
+  //         index: t.detail.value
+  //     })
+  // },
   //地址帅选 start
-  bindMultiPickerColumnChange: function (t) {
-    console.log("修改的列为", t.detail.column, "，值为", t.detail.value);
-    var a = this, e = {
-      city: a.data.city,
-      multiIndex: a.data.multiIndex
-    };
-    e.multiIndex[t.detail.column] = t.detail.value;
-    var i = a.data.city_id;
-    switch (t.detail.column) {
-      case 0:
-        var n = a.data.city[0][t.detail.value].id;
-        i != n && a.searchClassInfo(n), e.multiIndex[1] = 0;
-    }
-  },
-  bindMultiPickerChange: function (t) {
-    var a = this;
-    if (t.detail.value[0] == 0) {
-      a.setData({
-        address1: '请选择'
-      });
-    } else {
-      a.setData({
-        "form.workCityString": a.data.city[0][t.detail.value[0]].name + ',' + a.data.city[1][t.detail.value[1]].name
-      });
-    }
-  },
-  searchClassInfo: function (t) {
-    var a = this;
-    http.get("getcity", { pid: t }).then(data => {
-      a.setData({
-        city: data
-      });
-    });
-  },
-  getcity: function () {
-    var t = this;
-    http.get("getcity", { pid: 0 }).then(data => {
-      t.setData({
-        city: data
-      });
-    });
-  },
+  // bindMultiPickerColumnChange: function (t) {
+  //   console.log("修改的列为", t.detail.column, "，值为", t.detail.value);
+  //   var a = this, e = {
+  //     city: a.data.city,
+  //     multiIndex: a.data.multiIndex
+  //   };
+  //   e.multiIndex[t.detail.column] = t.detail.value;
+  //   var i = a.data.city_id;
+  //   switch (t.detail.column) {
+  //     case 0:
+  //       var n = a.data.city[0][t.detail.value].id;
+  //       i != n && a.searchClassInfo(n), e.multiIndex[1] = 0;
+  //   }
+  // },
+  // bindMultiPickerChange: function (t) {
+  //   var a = this;
+  //   if (t.detail.value[0] == 0) {
+  //     a.setData({
+  //       address1: '请选择'
+  //     });
+  //   } else {
+  //     a.setData({
+  //       "form.workCityString": a.data.city[0][t.detail.value[0]].name + ',' + a.data.city[1][t.detail.value[1]].name
+  //     });
+  //   }
+  // },
+  // searchClassInfo: function (t) {
+  //   var a = this;
+  //   http.get("getcity", { pid: t }).then(data => {
+  //     a.setData({
+  //       city: data
+  //     });
+  //   });
+  // },
+  // getcity: function () {
+  //   var t = this;
+  //   http.get("getcity", { pid: 0 }).then(data => {
+  //     t.setData({
+  //       city: data
+  //     });
+  //   });
+  // },
   //地址帅选 end
 
-  onWorkCity: function(t) {
-    this.setData({
-      "form.workCityString": this.data.citys[t.detail.value],
-    })
-  },
-  onMarry: function(t) {
-      this.setData({
-          "cate.marryActionIndex": t.detail.value,
-          "form.marryDateString": this.data.cate.marryData[t.detail.value].name,
-          "form.marryDate": this.data.cate.marryData[t.detail.value].value
-      })
-  },
-  onShowinfo: function(t) {
-      this.setData({
-          "cate.showinfoActionIndex": t.detail.value,
-          "form.showinfoDataString": this.data.cate.showinfoData[t.detail.value].name,
-          "form.showinfoData": this.data.cate.showinfoData[t.detail.value].value
-      })
-  },
-  onStock: function(t) {
-      this.setData({
-          "cate.stockActionIndex": t.detail.value,
-          "form.stockString": this.data.cate.stockData[t.detail.value].name,
-          "form.stock": this.data.cate.stockData[t.detail.value].value
-      })
-  },
-  onConstellation: function(t) {
-      this.setData({
-          "cate.constellationActionIndex": t.detail.value,
-          "form.constellationString": this.data.cate.constellationData[t.detail.value].name,
-          "form.constellation": this.data.cate.constellationData[t.detail.value].value
-      })
-  },
-  onDrinking: function(t) {
-      this.setData({
-          "cate.drinkingActionIndex": t.detail.value,
-          "form.drinkingString": this.data.cate.drinkingData[t.detail.value].name,
-          "form.drinking": this.data.cate.drinkingData[t.detail.value].value
-      })
-  },
-  onSmoking: function(t) {
-      this.setData({
-          "cate.smokingActionIndex": t.detail.value,
-          "form.smokingString": this.data.cate.smokingData[t.detail.value].name,
-          "form.smoking": this.data.cate.smokingData[t.detail.value].value
-      })
-  },
-  onPhone: function() {
-      return wx.showModal({
-          title: "温馨提示",
-          content: "请先保存好其它信息",
-          cancelText: "去保存",
-          confirmText: "已保存",
-          success: function(t) {
-              t.confirm ? wx.navigateTo({
-                  url: "/pages/u/settings/editmobile"
-              }) : t.cancel && console.log("用户点击取消")
-          }
-      })
-  },
-  onWeight: function(t) {
-      this.setData({
-          "cate.weightActionIndex": t.detail.value,
-          "form.weight": this.data.cate.weightData[t.detail.value].value
-      })
-  },
+  // onWorkCity: function(t) {
+  //   this.setData({
+  //     "form.workCityString": this.data.citys[t.detail.value],
+  //   })
+  // },
+  // onMarry: function(t) {
+  //     this.setData({
+  //         "cate.marryActionIndex": t.detail.value,
+  //         "form.marryDateString": this.data.cate.marryData[t.detail.value].name,
+  //         "form.marryDate": this.data.cate.marryData[t.detail.value].value
+  //     })
+  // },
+  // onShowinfo: function(t) {
+  //     this.setData({
+  //         "cate.showinfoActionIndex": t.detail.value,
+  //         "form.showinfoDataString": this.data.cate.showinfoData[t.detail.value].name,
+  //         "form.showinfoData": this.data.cate.showinfoData[t.detail.value].value
+  //     })
+  // },
+  // onStock: function(t) {
+  //     this.setData({
+  //         "cate.stockActionIndex": t.detail.value,
+  //         "form.stockString": this.data.cate.stockData[t.detail.value].name,
+  //         "form.stock": this.data.cate.stockData[t.detail.value].value
+  //     })
+  // },
+  // onConstellation: function(t) {
+  //     this.setData({
+  //         "cate.constellationActionIndex": t.detail.value,
+  //         "form.constellationString": this.data.cate.constellationData[t.detail.value].name,
+  //         "form.constellation": this.data.cate.constellationData[t.detail.value].value
+  //     })
+  // },
+  // onDrinking: function(t) {
+  //     this.setData({
+  //         "cate.drinkingActionIndex": t.detail.value,
+  //         "form.drinkingString": this.data.cate.drinkingData[t.detail.value].name,
+  //         "form.drinking": this.data.cate.drinkingData[t.detail.value].value
+  //     })
+  // },
+  // onSmoking: function(t) {
+  //     this.setData({
+  //         "cate.smokingActionIndex": t.detail.value,
+  //         "form.smokingString": this.data.cate.smokingData[t.detail.value].name,
+  //         "form.smoking": this.data.cate.smokingData[t.detail.value].value
+  //     })
+  // },
+  // onPhone: function() {
+  //     return wx.showModal({
+  //         title: "温馨提示",
+  //         content: "请先保存好其它信息",
+  //         cancelText: "去保存",
+  //         confirmText: "已保存",
+  //         success: function(t) {
+  //             t.confirm ? wx.navigateTo({
+  //                 url: "/pages/u/settings/editmobile"
+  //             }) : t.cancel && console.log("用户点击取消")
+  //         }
+  //     })
+  // },
+  // onWeight: function(t) {
+  //     this.setData({
+  //         "cate.weightActionIndex": t.detail.value,
+  //         "form.weight": this.data.cate.weightData[t.detail.value].value
+  //     })
+  // },
 
 
-  onChildren: function(t) {
-      this.setData({
-          "cate.childrenActionIndex": t.detail.value,
-          "form.childrenString": this.data.cate.childrenData[t.detail.value].name,
-          "form.children": this.data.cate.childrenData[t.detail.value].value
-      })
-  },
-  onWantchildren: function(t) {
-      this.setData({
-          "cate.wantchildrenActionIndex": t.detail.value,
-          "form.wantChildrenString": this.data.cate.wantchildrenData[t.detail.value].name,
-          "form.wantChildren": this.data.cate.wantchildrenData[t.detail.value].value
-      })
-  },
-  onXin6yang: function (t) {
-    this.setData({
-      "form.xinyang": this.data.xinyang[t.detail.value],
-    })
-  },
-  onOccupation: function(t) {
-      this.setData({
-          "cate.occupationActionIndex": t.detail.value,
-          "form.occupationString": this.data.cate.occupationData[t.detail.value].name,
-          "form.occupation": this.data.cate.occupationData[t.detail.value].value
-      })
-  },
-  onVehicle: function(t) {
-      this.setData({
-          "cate.vehicleActionIndex": t.detail.value,
-          "form.vehicleString": this.data.cate.vehicleData[t.detail.value].name,
-          "form.vehicle": this.data.cate.vehicleData[t.detail.value].value
-      })
-  },
-  onHouse: function(t) {
-      this.setData({
-          "cate.houseActionIndex": t.detail.value,
-          "form.houseString": this.data.cate.houseData[t.detail.value].name,
-          "form.house": this.data.cate.houseData[t.detail.value].value
-      })
-  },
-  onBody: function(t) {
-      this.setData({
-          "cate.bodyActionIndex": t.detail.value,
-          "form.bodyString": this.data.cate.bodyData[t.detail.value].name,
-          "form.body": this.data.cate.bodyData[t.detail.value].value
-      })
-  },
+  // onChildren: function(t) {
+  //     this.setData({
+  //         "cate.childrenActionIndex": t.detail.value,
+  //         "form.childrenString": this.data.cate.childrenData[t.detail.value].name,
+  //         "form.children": this.data.cate.childrenData[t.detail.value].value
+  //     })
+  // },
+  // onWantchildren: function(t) {
+  //     this.setData({
+  //         "cate.wantchildrenActionIndex": t.detail.value,
+  //         "form.wantChildrenString": this.data.cate.wantchildrenData[t.detail.value].name,
+  //         "form.wantChildren": this.data.cate.wantchildrenData[t.detail.value].value
+  //     })
+  // },
+  // onXin6yang: function (t) {
+  //   this.setData({
+  //     "form.xinyang": this.data.xinyang[t.detail.value],
+  //   })
+  // },
+  // onOccupation: function(t) {
+  //     this.setData({
+  //         "cate.occupationActionIndex": t.detail.value,
+  //         "form.occupationString": this.data.cate.occupationData[t.detail.value].name,
+  //         "form.occupation": this.data.cate.occupationData[t.detail.value].value
+  //     })
+  // },
+  // onVehicle: function(t) {
+  //     this.setData({
+  //         "cate.vehicleActionIndex": t.detail.value,
+  //         "form.vehicleString": this.data.cate.vehicleData[t.detail.value].name,
+  //         "form.vehicle": this.data.cate.vehicleData[t.detail.value].value
+  //     })
+  // },
+  // onHouse: function(t) {
+  //     this.setData({
+  //         "cate.houseActionIndex": t.detail.value,
+  //         "form.houseString": this.data.cate.houseData[t.detail.value].name,
+  //         "form.house": this.data.cate.houseData[t.detail.value].value
+  //     })
+  // },
+  // onBody: function(t) {
+  //     this.setData({
+  //         "cate.bodyActionIndex": t.detail.value,
+  //         "form.bodyString": this.data.cate.bodyData[t.detail.value].name,
+  //         "form.body": this.data.cate.bodyData[t.detail.value].value
+  //     })
+  // },
 
-  showToastSuc: function(t) {
-      wx.showToast({
-        title: t,
-        duration:1500,
-        icon : 'sucess'
-      });
-  },
-  showToastErr: function(t) {
-    wx.showToast({
-      title: t,
-      duration: 1500,
-      icon: "none"
-    });
-  },
-  showToastCancel: function(t) {
-      this.$wuxToast.show({
-          type: "cancel",
-          timer: 1500,
-          color: "#fff",
-          text: "" + t
-      })
-  },
-  getPhoneReg: function(t) {
-      var a = this;
-      a.setData({ auth1: 0, auth2: 1});
-  },
-  getPhoneReg2: function (t) {
-    var a = this;
-    a.setData({ auth1: 1, auth2: 0 });
-  },
+  // showToastSuc: function(t) {
+  //     wx.showToast({
+  //       title: t,
+  //       duration:1500,
+  //       icon : 'sucess'
+  //     });
+  // },
+  // showToastErr: function(t) {
+  //   wx.showToast({
+  //     title: t,
+  //     duration: 1500,
+  //     icon: "none"
+  //   });
+  // },
+  // showToastCancel: function(t) {
+  //     this.$wuxToast.show({
+  //         type: "cancel",
+  //         timer: 1500,
+  //         color: "#fff",
+  //         text: "" + t
+  //     })
+  // },
+  // getPhoneReg: function(t) {
+  //     var a = this;
+  //     a.setData({ auth1: 0, auth2: 1});
+  // },
+  // getPhoneReg2: function (t) {
+  //   var a = this;
+  //   a.setData({ auth1: 1, auth2: 0 });
+  // },
 
-  submitForm_regquick: function(t) {
-      var a = this,
-          e = this,
-          n = (this.data.id, t.detail.value);
-      if (!this.WxValidate_regquick.checkForm(t)) {
-          var i = this.WxValidate_regquick.errorList[0];
-          return e.showToastErr(i.msg), !1
-      }
-      n.action = "reg", this.regquick.saveAsync(n).then(function(t) {
-          200 == t.code ? a.showToastSuc("授权成功", setTimeout(function() {
-              a.data.showModalStatus[0] = !1, a.setData({
-                  showModalStatus: a.data.showModalStatus
-              })
-          }, 1e3)) : a.showToastCancel(t.data)
-      })
-  },
-  bindMobile: function(t) {
-      this.setData({
-          "mobile.number": t.detail.value
-      })
-  },
-  getChangeCode: function(t) {
-      var a = this,
-          e = this,
-          n = this.data.mobile.number,
-          i = /^(13|14|15|16|17|18|19)[0-9]{9}$/,
-          o = {
-              mobile: this.data.mobile.number
-          };
-      i.test(n) ? 0 == this.data.mobile.phone_verify_status && this.mobileVerify.saveAsync(o).then(function(t) {
-          200 != t.code ? e.showToastErr(t.data) : a.getRecode()
-      }) : e.showToastErr("请填写正确手机号")
-  },
-  getRecode: function() {
-      var t = this,
-          a = parseInt(t.data.mobile.phone_verify_expiry_time);
-      t.setData({
-          "mobile.phone_verify_status": !0
-      }), a > 0 && t.setData({
-          "mobile.phone_verify_text": a + "秒后重发"
-      });
-      var e = setInterval(function() {
-          --a > 0 ? t.setData({
-              "mobile.phone_verify_text": a + "秒后重发"
-          }) : (t.setData({
-              "mobile.phone_verify_status": !1,
-              "mobile.phone_verify_text": "重新获取"
-          }), clearInterval(e))
-      }, 1e3)
-  },
-  onUnload: function() {
-      c.removeNotification("UserNotification", this)
-  }
+  // submitForm_regquick: function(t) {
+  //     var a = this,
+  //         e = this,
+  //         n = (this.data.id, t.detail.value);
+  //     if (!this.WxValidate_regquick.checkForm(t)) {
+  //         var i = this.WxValidate_regquick.errorList[0];
+  //         return e.showToastErr(i.msg), !1
+  //     }
+  //     n.action = "reg", this.regquick.saveAsync(n).then(function(t) {
+  //         200 == t.code ? a.showToastSuc("授权成功", setTimeout(function() {
+  //             a.data.showModalStatus[0] = !1, a.setData({
+  //                 showModalStatus: a.data.showModalStatus
+  //             })
+  //         }, 1e3)) : a.showToastCancel(t.data)
+  //     })
+  // },
+  // bindMobile: function(t) {
+  //     this.setData({
+  //         "mobile.number": t.detail.value
+  //     })
+  // },
+  // getChangeCode: function(t) {
+  //     var a = this,
+  //         e = this,
+  //         n = this.data.mobile.number,
+  //         i = /^(13|14|15|16|17|18|19)[0-9]{9}$/,
+  //         o = {
+  //             mobile: this.data.mobile.number
+  //         };
+  //     i.test(n) ? 0 == this.data.mobile.phone_verify_status && this.mobileVerify.saveAsync(o).then(function(t) {
+  //         200 != t.code ? e.showToastErr(t.data) : a.getRecode()
+  //     }) : e.showToastErr("请填写正确手机号")
+  // },
+  // getRecode: function() {
+  //     var t = this,
+  //         a = parseInt(t.data.mobile.phone_verify_expiry_time);
+  //     t.setData({
+  //         "mobile.phone_verify_status": !0
+  //     }), a > 0 && t.setData({
+  //         "mobile.phone_verify_text": a + "秒后重发"
+  //     });
+  //     var e = setInterval(function() {
+  //         --a > 0 ? t.setData({
+  //             "mobile.phone_verify_text": a + "秒后重发"
+  //         }) : (t.setData({
+  //             "mobile.phone_verify_status": !1,
+  //             "mobile.phone_verify_text": "重新获取"
+  //         }), clearInterval(e))
+  //     }, 1e3)
+  // },
+  // onUnload: function() {
+  //     c.removeNotification("UserNotification", this)
+  // }
 });

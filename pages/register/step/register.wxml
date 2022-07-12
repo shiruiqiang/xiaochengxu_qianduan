@@ -28,13 +28,13 @@
                                 <view class="item {{form.heightString?'active':''}}">
                                     <view class="text">姓名</view>
                                     <view class="input">
-                                        <input bindinput="getName" class="input-txt" name="name" placeholder="对外不会展示" placeholderClass="placeholder" type="text" value="{{form.name}}"></input>
+                                        <input bindinput="getName" class="input-txt"  placeholder="对外不会展示" placeholderClass="placeholder" type="text" value="{{form.name}}"></input>
                                     </view>
                                 </view>
                                 <view class="item {{form.salaryString?'active':''}}">
                                     <view class="text">昵称</view>
                                     <view class="input">
-                                        <input bindinput="getNickname" class="input-txt" name="alias" placeholder="给自己起个好昵称" placeholderClass="placeholder" type="text" value="{{form.alias}}"></input>
+                                        <input bindinput="getNickname" class="input-txt"  placeholder="给自己起个好昵称" placeholderClass="placeholder" type="text" value="{{form.alias}}"></input>
                                     </view>
                                 </view>
                             </view>
@@ -73,7 +73,7 @@
                                 <view class="item {{form.salaryString?'active':''}}">
                                     <view class="text">体重（kg）</view>
                                     <view class="input">
-                                        <input bindinput="getweight" class="input-txt" name="nickname" placeholder="请填写" placeholderClass="placeholder" type="text" value="{{form.weight}}"></input>
+                                        <input bindinput="getweight" class="input-txt"  placeholder="请填写" placeholderClass="placeholder" type="text" value="{{form.weight}}"></input>
                                     </view>
                                 </view>
                             </view>
@@ -138,7 +138,7 @@
                         <view class="item {{form.occupationString?'active':''}}">
                             <view class="text">职业</view>
                             <view class="input">
-                                <input bindinput="occupationChange" class="input-txt" name="occupation"
+                                <input bindinput="occupationChange" class="input-txt"
                                        placeholder="填写职业" placeholderClass="placeholder" type="text" value="{{form.occupation}}"></input>
                             </view>
                         </view>
@@ -179,7 +179,7 @@
                       <view class="item">
                           <view class="tit">微信号</view>
                               <view class="input">
-                                  <input bindinput="weChatChange" class="input-txt" name="weChat"
+                                  <input bindinput="weChatChange" class="input-txt"
                                     placeholder="填写微信号" placeholderClass="placeholder" type="text"
                                     value="{{form.weChat}}">
                                   </input>
@@ -199,7 +199,7 @@
                             <view class="item">
                                 <view class="tit">手机号</view>
                                 <view class="input">
-                                    <input bindinput="phoneChange" class="input-txt" name="phone"
+                                    <input bindinput="phoneChange" class="input-txt"
                                            placeholder="填写手机号" placeholderClass="placeholder" type="text"
                                            value="{{form.phone}}">
                                     </input>
@@ -208,7 +208,7 @@
                             <view class="item">
                                 <view class="tit">确认手机号</view>
                                 <view class="input">
-                                    <input bindinput="phone2Change" class="input-txt" name="phone2" placeholder="填写确认手机号"
+                                    <input bindinput="phone2Change" class="input-txt"  placeholder="填写确认手机号"
                                            placeholderClass="placeholder" type="text" value="{{form.phone2}}">
                                     </input>
                                 </view>
