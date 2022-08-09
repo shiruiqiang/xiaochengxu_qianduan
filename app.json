@@ -1,17 +1,12 @@
 {
   "pages": [
+    
+    "pages/u/index",
+    "pages/wode/dingdanxiangguan/taocanliebiao",
+    "pages/wode/dingdanxiangguan/taocangoumaiye",
+    
     "pages/register/step/register",
     "pages/register/step/entrance",
-    
-
-
-
-
-
-
-
-
-
 
 
 
@@ -26,7 +21,6 @@
     "pages/register/msglogin",
     "pages/index/member",
     "pages/gift/list",
-    "pages/u/index",
     "pages/buy/payment",
     "pages/u/edit/index",
     "pages/buy/vipment",
@@ -61,6 +55,7 @@
     "pages/user/company/index",
     "pages/u/edit/xq",
     "pages/chat/chat"
+
   ],
   "window": {
     "backgroundTextStyle": "light",
