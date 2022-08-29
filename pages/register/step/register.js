@@ -849,7 +849,7 @@ Page({
                 // siteroot = siteroot.replace('app/index.php', 'web/index.php');
                 // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
                 wx.uploadFile({
-                    url: o.server_url + "/common/upload",
+                    url: o.server_url + "/mini_program/upload",
                     filePath: tempFilePaths[0],
                     name: 'file',
                     formData: {},
@@ -879,7 +879,7 @@ Page({
             }),
                 // http.get('setimgs', { imgs: a.data.files.join(','), uid: wx.getStorageSync("user").id }).then(data => { })
                     wx.request({
-                        url: o.server_url + '/common/delete/file', //仅为示例，并非真实的接口地址
+                        url: o.server_url + '/mini_program/delete/file', //仅为示例，并非真实的接口地址
                         method: 'GET',
                         data: {"resource": e.substring(e.indexOf("/upload"))},
                         header: {
@@ -1038,7 +1038,7 @@ Page({
         if(this.data.headPortraitUrl.length > 0){
             var url = this.data.headPortraitUrl[0];
             wx.request({
-                url: o.server_url + '/common/delete/file', //仅为示例，并非真实的接口地址
+                url: o.server_url + '/mini_program/delete/file', //仅为示例，并非真实的接口地址
                 method: 'GET',
                 data: {"resource": url.substring(url.indexOf("/upload"))},
                 header: {
@@ -1059,7 +1059,7 @@ Page({
                 // siteroot = siteroot.replace('app/index.php', 'web/index.php');
                 // let upurl = siteroot + '?i=' + app.siteInfo.uniacid + '&c=utility&a=file&do=upload&thumb=0';
                 wx.uploadFile({
-                    url: o.server_url + "/common/upload",
+                    url: o.server_url + "/mini_program/upload",
                     filePath: tempFilePaths[0],
                     name: 'file',
                     formData: {},
