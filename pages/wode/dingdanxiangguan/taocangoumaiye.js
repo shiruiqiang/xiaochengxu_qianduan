@@ -9,28 +9,34 @@ import http from '../../util/request.js';
 Page({
   data: {
     logged: 0,
-    indicatorDots: !0,
-    indicatorColor: "hsla(0,0%,100%,.3)",
-    indicatorActiveColor: "#ffffff",
-    vertical: !1,
-    autoplay: !0,
-    interval: 3e3,
+    // indicatorDots: !0,
+    // indicatorColor: "hsla(0,0%,100%,.3)",
+    // indicatorActiveColor: "#ffffff",
+    // vertical: !1,
+    // autoplay: !0,
+    // interval: 3e3,
     duration: 500,
     actionItem: "0,0",
-    showModalStatus: !0,
-    nowPriceStr: "0.00",
-    config: {
-      pro: [{
-        name: "name1",
-        value: [{
-          monthStr: "priceOfOneDay1",
-          priceOfOneDay: "priceOfOneDay1",
-          realPriceStr: "1111"
-        }]
-      }]
-    }
+    // showModalStatus: !0,
+    // nowPriceStr: "0.00",
+    // config: {
+    //   pro: [{
+    //     name: "name1",
+    //     value: [{
+    //       monthStr: "priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1",
+    //       priceOfOneDay: "priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1priceOfOneDay1"
+    //       // , realPriceStr: "1111"
+    //     }]
+    //   }]
+    // },
+    set_meal_details: undefined
   },
   onLoad: function(t) {
+    this.setData({set_meal_details: JSON.parse(decodeURIComponent(t.param))});
+
+
+
+
     // this.setData({t:t.t||0});
     // if (!t.t) {
     //   wx.setNavigationBarTitle({
@@ -59,55 +65,55 @@ Page({
     // });
   },
   onShow: function() {
-    this.getUserInfoData()
+    // this.getUserInfoData()
   },
-  getUserInfoData: function() {
-    var t = this;
-    e.HttpResource("member/getBasicProfile.html").saveAsync().then(function(a) {
-      if (a.code = 200) t.setData({
-        userinfo: a.data.userinfo
-      });
-      else if (300 == a.code) return e.WxService.showModal({
-        content: "未知错误，请重新登录！",
-        showCancel: !1
-      }).then(function() {
-        return e.WxService.removeStorageSync("loginSession")
-      }, e.WxService.removeStorageSync("us"), e.WxService.navigateTo("/pages/buy/payment"))
-    })
-  },
-  getData: function() {
-    var t = this;
-    this.productData.getAsync().then(function(a) {
-      if (200 == a.code) {
-        t.uid = a.data.uid;
-        var o = {
-          ios_pay: a.data.ios_pay,
-          is_special: a.data.is_special,
-          pro: [{
-            name: "充值会员",
-            value: a.data.products
-          }, {
-            name: "购买钥匙",
-            value: a.data.jb_products
-          }]
-        };
-        "ios" == e.WxService.getStorageSync("systemInfo").platform && 1 == a.data.ios_pay ? e.WxService.redirectTo("/pages/index/hnqx") : t.setData({
-          logged: 1,
-          items: o,
-          nowPriceStr: o.pro[0].value[0].realPriceStr
-        })
-      }
-    })
-  },
-  getService: function(t) {
-    var e = t.currentTarget.dataset,
-        a = e.state.split(","),
-        o = this.data.config.pro[a[0]].value[a[1]];
-    this.setData({
-      actionItem: e.state,
-      nowPriceStr: o.realPriceStr
-    })
-  },
+  // getUserInfoData: function() {
+  //   var t = this;
+  //   e.HttpResource("member/getBasicProfile.html").saveAsync().then(function(a) {
+  //     if (a.code = 200) t.setData({
+  //       userinfo: a.data.userinfo
+  //     });
+  //     else if (300 == a.code) return e.WxService.showModal({
+  //       content: "未知错误，请重新登录！",
+  //       showCancel: !1
+  //     }).then(function() {
+  //       return e.WxService.removeStorageSync("loginSession")
+  //     }, e.WxService.removeStorageSync("us"), e.WxService.navigateTo("/pages/buy/payment"))
+  //   })
+  // },
+  // getData: function() {
+  //   var t = this;
+  //   this.productData.getAsync().then(function(a) {
+  //     if (200 == a.code) {
+  //       t.uid = a.data.uid;
+  //       var o = {
+  //         ios_pay: a.data.ios_pay,
+  //         is_special: a.data.is_special,
+  //         pro: [{
+  //           name: "充值会员",
+  //           value: a.data.products
+  //         }, {
+  //           name: "购买钥匙",
+  //           value: a.data.jb_products
+  //         }]
+  //       };
+  //       "ios" == e.WxService.getStorageSync("systemInfo").platform && 1 == a.data.ios_pay ? e.WxService.redirectTo("/pages/index/hnqx") : t.setData({
+  //         logged: 1,
+  //         items: o,
+  //         nowPriceStr: o.pro[0].value[0].realPriceStr
+  //       })
+  //     }
+  //   })
+  // },
+  // getService: function(t) {
+  //   var e = t.currentTarget.dataset,
+  //       a = e.state.split(","),
+  //       o = this.data.config.pro[a[0]].value[a[1]];
+  //   this.setData({
+  //     actionItem: e.state,
+  //     nowPriceStr: o.realPriceStr
+  //   })
+  // },
   getBuy: function() {
     var o = this.data.actionItem.split(","),
         i = this.data.config.pro[o[0]].value[o[1]],
@@ -187,29 +193,29 @@ Page({
     } else s.showToastErr("参数错误")
     */
   },
-  showToastSuc: function(t, e) {
-    this.$wuxToast.show({
-      type: "success",
-      timer: 1500,
-      color: "#fff",
-      text: "" + t,
-      success: function() {
-        return e
-      }
-    })
-  },
-  showToastErr: function(t, e) {
-    this.$wuxToast.show({
-      type: "forbidden",
-      timer: 1500,
-      color: "#fff",
-      text: "" + t,
-      success: function() {
-        return e
-      }
-    })
-  },
+  // showToastSuc: function(t, e) {
+  //   this.$wuxToast.show({
+  //     type: "success",
+  //     timer: 1500,
+  //     color: "#fff",
+  //     text: "" + t,
+  //     success: function() {
+  //       return e
+  //     }
+  //   })
+  // },
+  // showToastErr: function(t, e) {
+  //   this.$wuxToast.show({
+  //     type: "forbidden",
+  //     timer: 1500,
+  //     color: "#fff",
+  //     text: "" + t,
+  //     success: function() {
+  //       return e
+  //     }
+  //   })
+  // },
   onUnload: function() {
-    a.postNotificationName("UserNotification")
+    // a.postNotificationName("UserNotification")
   }
 });
